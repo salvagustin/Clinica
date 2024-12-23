@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+
+{% block titulo %} Pacientes {% endblock %}
+
+{% block contenido %} 
+
+<div class="card">
+    <div class="card-header">
+        <a name="" id="" class="btn btn-success" href="{% url 'crearpaciente' %}" role="button">Agregar</a>
+    </div>
+   
+    
+    <div class="card-body">
+        <h4 class="card-title">Pacientes</h4>
+        <div
+            class="table-responsive"
+        >
+            <table
+                class="table table-primary"
+            >
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Fecha nacimiento</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Paciente in pacientes %}
+                    <tr>
+                        <td>{{ Paciente.idpaciente }}</td>
+                        <td>{{ Paciente.nombre }}</td>
+                        <td>{{ Paciente.fecha_nacimiento }}</td>
+                        <td>{{ Paciente.telefono }}</td>
+                        <td>{{ Paciente.sexo }}</td>
+                        <td>
+                        <a name="" id="" class="btn btn-info"  href="{% url 'editarpaciente' Paciente.idpaciente%}"  role="button" >Editar</a>
+                        <a name="" id="" class="btn btn-danger"  href="{% url 'eliminarpaciente' Paciente.idpaciente %}"  role="button" >Eliminar</a> 
+                        </td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <div class="card-footer text-muted"></div>
+</div>
+
+
+{% endblock %}

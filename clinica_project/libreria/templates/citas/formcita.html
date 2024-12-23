@@ -1,0 +1,30 @@
+<form enctype="multipart/form-data" method="post">
+
+    {% csrf_token %}
+
+<table class = 'w-50 table table-light' style="border-radius:10px;" autocomplete="off">
+    {% for field in formulariocrearcita %}
+    <tr>
+        <th>{{field.label}}</th>
+       <th >{{field}}</th>
+    </tr>
+    {% endfor %}
+</table>
+   
+    <input 
+    name=""
+    id=""
+    class="btn btn-success"
+    type="submit"
+    value="Guardar"
+/> 
+    <a
+        name=""
+        id=""
+        class="btn btn-primary"
+        href="{% url 'menucitas' %}"
+        role="button"
+        >Cancelar</a
+    >
+    
+</form>

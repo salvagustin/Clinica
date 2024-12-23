@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block titulo %} Recetas {% endblock %}
+
+{% block contenido %} 
+
+<div class="card">
+    <div class="card-header">
+        <a name="" id="" class="btn btn-success" href="{% url 'crearreceta' %}" role="button">Agregar</a>
+    </div>
+   
+    
+    <div class="card-body">
+        <h4 class="card-title">Recetas</h4>
+        <div
+            class="table-responsive"
+        >
+            <table
+                class="table table-primary"
+            >
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Cita</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Medicamento</th>
+                        <th scope="col">Tratamiento</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Receta in recetas %}
+                    <tr>
+                        <td>{{ Receta.idreceta }}</td>
+                        <td>{{ Receta.paciente }}</td>
+                        <td>{{ Receta.cita }}</td>
+                        <td>{{ Receta.fechareceta }}</td>
+                        <td>{{ Receta.medicamentos }}</td>
+                        <td>{{ Receta.tratamiento }}</td>
+                        <td>
+                        <a name="" id="" class="btn btn-info"  href="{% url 'editarreceta' Receta.idreceta %}"  role="button" >Editar</a>
+                        <a name="" id="" class="btn btn-danger"  href="{% url 'eliminarreceta' Receta.idreceta %}"  role="button" >Eliminar</a> 
+                        </td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <div class="card-footer text-muted"></div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+
+{% block titulo  %} Crear Paciente {% endblock %} 
+
+{% block contenido  %} 
+
+<div class="card">
+    <div class="card-header">
+         Agregar paciente
+    </div>
+   
+    <div class="card-body">
+        <h4 class="card-title">Datos del paciente</h4>
+        {% include 'pacientes/form.html' %}
+        
+    </div>
+    <div class="card-footer text-muted">
+        
+    </div>
+</div>
+
+
+{% endblock %} 

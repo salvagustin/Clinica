@@ -1,0 +1,7 @@
+Usuarios	(id, nombre, usuario, pass, fechar_creado)
+Paciente	(id, nombre, fecha_nacimiento,telefono,sexo)
+Citas		(id, paciente, fecha, hora, precio, diagnostico, observaciones )
+Recetas		(id, paciente, medicamentos, tratamiento)
+
+superuser admin
+contra 12345
