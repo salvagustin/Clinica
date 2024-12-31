@@ -20,13 +20,33 @@ def menupacientes(request):
     return render(request,'pacientes/menupacientes.html', {'pacientes': pacientes})
 
 def crearpaciente(request):
+    formulariocrearpaciente = PacienteForm()
+    if request.method == "POST":
+        formulariocrearpaciente = PacienteForm(request.POST, request.FILES)
+        if formulariocrearpaciente.is_valid():
+            formulariocrearpaciente = PacienteForm(request.POST, request.FILES)
+            f = formulariocrearpaciente.save(commit=False)
+            f.save()
+            return redirect('menupacientes')
+        else:
+            return HttpResponse(
+                """your form is wrong, reload on <a href = "{{ url : 'menupacientes' }}" >Recargar</a>"""
+            )
+    else:
+        return render(
+            request,
+            "pacientes/crearpaciente.html",
+            {"formulariocrearpaciente": formulariocrearpaciente},
+        )
+'''
+def crearpaciente(request):
     formulariocrearpaciente = PacienteForm(request.POST or None)   
     if formulariocrearpaciente.is_valid():
         formulariocrearpaciente.save()
         return redirect('menupacientes')
     formulariocrearpaciente.fields["fecha_nacimiento"].widget=DatePickerInput(format="%d/%m/%Y")  
     return render(request,'pacientes/crearpaciente.html', {'formulariocrearpaciente': formulariocrearpaciente})
-
+'''
 def editarpaciente(request, idpaciente):
     paciente = Paciente.objects.get(idpaciente=idpaciente)
     formularioeditarpaciente = PacienteForm(request.POST or None, instance=paciente)
@@ -41,12 +61,10 @@ def eliminarpaciente(request, idpaciente):
     return redirect('menupacientes') 
 
 
-# VISTAS PARA PACIENTES--------------------------------------------------------------------------------------
+# VISTAS PARA CITAS--------------------------------------------------------------------------------------
 def menucitas(request):
     citas = Cita.objects.all()
     return render(request,'citas/menucitas.html', {'citas': citas})
-
-
 
 def crearcita(request):
     formulariocrearcita = CitaForm(request.POST or None)  
@@ -54,12 +72,7 @@ def crearcita(request):
     if formulariocrearcita.is_valid():
         formulariocrearcita.save()
         return redirect('menucitas') 
-    
-    
     return render(request,'citas/crearcita.html', {'formulariocrearcita': formulariocrearcita})
-
-
-
 
 def editarcita(request, idcita):
     cita = Cita.objects.get(idcita=idcita)

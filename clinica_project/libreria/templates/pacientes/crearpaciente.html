@@ -1,26 +1,29 @@
 {% extends "base.html" %}
 
-{% load bootstrap4 %}
+{% load bootstrap3 %}
+
+{% block extrahead %}
+{{ formulariocrearpaciente.media }}
+{% endblock %}
 
 
 {% block titulo  %} Crear Paciente {% endblock %} 
 
-{% block contenido  %} 
+{% block content  %} 
 
-<div class="card">
-    <div class="card-header">
-         Agregar paciente
-    </div>
-   
-    <div class="card-body">
-        <h4 class="card-title">Datos del paciente</h4>
-        {% include 'pacientes/form.html' %}
-        
-    </div>
-    <div class="card-footer text-muted">
-        
-    </div>
-</div>
+<br>
+
+<h1>Consulta</h1>
+<br>
+    <form method = 'POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class = 'w-50 table table-light' style="border-radius:10px;">
+            {% bootstrap_form formulariocrearpaciente %}
+
+        </table>
+        <button type="submit" class="btn btn-primary">CONFIRMAR</button>
+        <a href="{% url 'clinica:pacientes' %}" class="btn btn-danger">CANCELAR</a>
+    </form>
 
 
-{% endblock %} 
+{% endblock content %} 

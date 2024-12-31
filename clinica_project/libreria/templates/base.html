@@ -11,7 +11,12 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" 
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
         <link href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-       
+        {% load bootstrap3 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+
+        {% block extrahead %}
+        {% endblock %}
     </head>
 
     <body>
