@@ -7,9 +7,12 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = '__all__'
-       
+        fields = ['nombre','telefono','sexo','fecha_nacimiento']
+        widgets = {
+            'fecha_nacimiento': DatePickerInput(format='%d/%m/%Y'),
+        }
         
+
 class CitaForm(forms.ModelForm):
     class Meta:
         model = Cita

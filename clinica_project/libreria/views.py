@@ -33,27 +33,15 @@ def crearpaciente(request):
                 """your form is wrong, reload on <a href = "{{ url : 'menupacientes' }}" >Recargar</a>"""
             )
     else:
-        return render(
-            request,
-            "pacientes/crearpaciente.html",
-            {"formulariocrearpaciente": formulariocrearpaciente},
-        )
-'''
-def crearpaciente(request):
-    formulariocrearpaciente = PacienteForm(request.POST or None)   
-    if formulariocrearpaciente.is_valid():
-        formulariocrearpaciente.save()
-        return redirect('menupacientes')
-    formulariocrearpaciente.fields["fecha_nacimiento"].widget=DatePickerInput(format="%d/%m/%Y")  
-    return render(request,'pacientes/crearpaciente.html', {'formulariocrearpaciente': formulariocrearpaciente})
-'''
+        return render(request,'pacientes/crearpaciente.html', {'formulariocrearpaciente': formulariocrearpaciente})
+
 def editarpaciente(request, idpaciente):
     paciente = Paciente.objects.get(idpaciente=idpaciente)
     formularioeditarpaciente = PacienteForm(request.POST or None, instance=paciente)
     if formularioeditarpaciente.is_valid() and request.POST:
         formularioeditarpaciente.save()
         return redirect('menupacientes')
-    return render(request,'pacientes/editarpaciente.html', {'formulariocrearpaciente': formularioeditarpaciente})
+    return render(request,'pacientes/crearpaciente.html', {'formulariocrearpaciente': formularioeditarpaciente})
 
 def eliminarpaciente(request, idpaciente):
     paciente = Paciente.objects.get(idpaciente=idpaciente)
@@ -68,7 +56,6 @@ def menucitas(request):
 
 def crearcita(request):
     formulariocrearcita = CitaForm(request.POST or None)  
-
     if formulariocrearcita.is_valid():
         formulariocrearcita.save()
         return redirect('menucitas') 

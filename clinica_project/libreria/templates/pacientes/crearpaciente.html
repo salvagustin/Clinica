@@ -13,7 +13,7 @@
 
 <br>
 
-<h1>Consulta</h1>
+<h1>Paciente</h1>
 <br>
     <form method = 'POST' enctype="multipart/form-data">
         {% csrf_token %}
@@ -22,7 +22,7 @@
 
         </table>
         <button type="submit" class="btn btn-primary">CONFIRMAR</button>
-        <a href="{% url 'clinica:pacientes' %}" class="btn btn-danger">CANCELAR</a>
+        <a href="{% url 'menupacientes' %}" class="btn btn-danger">CANCELAR</a>
     </form>
 
 

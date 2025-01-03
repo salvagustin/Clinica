@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'libreria',
     'bootstrap3',
+    'jquery',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [

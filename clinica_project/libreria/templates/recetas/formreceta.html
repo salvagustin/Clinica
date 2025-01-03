@@ -1,34 +1,28 @@
 <form enctype="multipart/form-data" method="post">
 
     {% csrf_token %}
-    {% for campo in formulariocrearreceta %}
-        <div class="mb-3">
-            <label for="" class="form-label">{{ campo.label }}</label>
-            <input 
-            type="{{ campo.field.widget.input_type }}" 
-            class="form-control" 
-            name="{{ campo.name }}" 
-            id="" 
-            aria-describedby="helpId" 
-            placeholder="{{ campo.label }}"
-            value="{{ campo.value | default:'' }}"
-            autocomplete= "off" />
-        </div>
-        <div class="col-12 help-text"> {{ campo.errors }}</div>
+
+<table class = 'w-50 table table-light' style="border-radius:10px;" autocomplete="off">
+    {% for field in formulariocrearreceta %}
+    <tr>
+        <th>{{field.label}}</th>
+       <th >{{field}}</th>
+    </tr>
     {% endfor %}
+</table>
+   
     <input 
-        name=""
-        id=""
-        class="btn btn-success"
-        type="submit"
-        value="Guardar"
-    />
-    
+    name=""
+    id=""
+    class="btn btn-success"
+    type="submit"
+    value="Guardar"
+/> 
     <a
         name=""
         id=""
         class="btn btn-primary"
-        href="{% url 'menurecetas' %}"
+        href="{% url 'menucitas' %}"
         role="button"
         >Cancelar</a
     >
