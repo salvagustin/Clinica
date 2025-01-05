@@ -21,5 +21,7 @@ urlpatterns = [
     path('recetas/crearreceta', views.crearreceta, name='crearreceta'),
     path('editarreceta/<int:idreceta>', views.editarreceta, name='editarreceta'),
     path('eliminarreceta/<int:idreceta>', views.eliminarreceta, name='eliminarreceta'),
-    
+
+   # path('imprimirreceta/', views.ListaRecetasListView.as_view(), name = 'imprimirreceta'),
+    path('imprimir/', views.ListRecetasPdf.as_view(), name = 'imprimir'),
 ]

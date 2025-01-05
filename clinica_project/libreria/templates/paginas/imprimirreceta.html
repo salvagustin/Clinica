@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Lista de recetas</h2>
+    <h3>Cantidad recetas: {{ count }}</h3>
+    <table border="1">
+        <thead>
+            <th>Numero</th>
+            <th>Paciente</th>
+            <th>Fecha</th>
+        </thead>
+        <tbody>
+            {% for receta in recetas %}
+                <tr>
+                    <td>{{ receta.idreceta  }}</td>
+                    <td>{{ receta.paciente }}</td>
+                    <td>{{ receta.fechareceta  }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

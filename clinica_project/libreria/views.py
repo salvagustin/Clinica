@@ -5,7 +5,8 @@ from .forms import CitaForm
 from .forms import RecetaForm
 from .models import Paciente, Cita, Receta
 from bootstrap_datepicker_plus.widgets import DatePickerInput
-
+from django.views.generic import ListView, View
+from .utils import render_to_pdf
 
 
 
@@ -100,3 +101,16 @@ def eliminarreceta(request, idreceta):
     receta = Receta.objects.get(idreceta=idreceta)
     receta.delete()
     return redirect('menurecetas')
+
+# Create your views here.
+class ListRecetasPdf(View):
+
+    def get(self, request, *args, **kwargs):
+        recetas = Receta.objects.all()
+        data = {
+            'count': recetas.count(),
+            'recetas': recetas
+        }
+        pdf = render_to_pdf('paginas/imprimirreceta.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
