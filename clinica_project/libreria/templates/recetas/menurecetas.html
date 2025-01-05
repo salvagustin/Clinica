@@ -40,7 +40,8 @@
                         <td>{{ Receta.tratamiento }}</td>
                         <td>
                         <a name="" id="" class="btn btn-info"  href="{% url 'editarreceta' Receta.idreceta %}"  role="button" >Editar</a>
-                        <a name="" id="" class="btn btn-danger"  href="{% url 'eliminarreceta' Receta.idreceta %}"  role="button" >Eliminar</a> 
+                        <a name="" id="" class="btn btn-danger"  href="{% url 'eliminarreceta' Receta.idreceta %}"  role="button" >Eliminar</a>
+                        <a name="" id="" class="btn btn-success"  href="{% url 'imprimirreceta'  Receta.idreceta %}"  role="button" target ="_blank">Imprimir</a> 
                         </td>
                     </tr>
                    {% endfor %}

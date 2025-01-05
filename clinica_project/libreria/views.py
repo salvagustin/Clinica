@@ -102,14 +102,15 @@ def eliminarreceta(request, idreceta):
     receta.delete()
     return redirect('menurecetas')
 
-# Create your views here.
-class ListRecetasPdf(View):
 
-    def get(self, request, *args, **kwargs):
-        recetas = Receta.objects.all()
+# Create your views here.
+class imprimirreceta(View):
+
+    def get(self, request,idreceta, *args, **kwargs):
+        receta = Receta.objects.get(idreceta = idreceta)
         data = {
-            'count': recetas.count(),
-            'recetas': recetas
+            
+            'receta': receta
         }
         pdf = render_to_pdf('paginas/imprimirreceta.html', data)
         return HttpResponse(pdf, content_type='application/pdf')

@@ -6,8 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Lista de recetas</h2>
-    <h3>Cantidad recetas: {{ count }}</h3>
+    <h2>Receta</h2>
+  
     <table border="1">
         <thead>
             <th>Numero</th>
@@ -15,13 +15,12 @@
             <th>Fecha</th>
         </thead>
         <tbody>
-            {% for receta in recetas %}
                 <tr>
                     <td>{{ receta.idreceta  }}</td>
                     <td>{{ receta.paciente }}</td>
                     <td>{{ receta.fechareceta  }}</td>
                 </tr>
-            {% endfor %}
+           
         </tbody>
     </table>
 
