@@ -8,7 +8,7 @@
 <body>
     <h2>Receta</h2>
   
-    <table border="1">
+    <table cellspacing="2" cellpadding="2" >
         <thead>
             <th>Numero</th>
             <th>Paciente</th>
@@ -16,13 +16,14 @@
         </thead>
         <tbody>
                 <tr>
-                    <td>{{ receta.idreceta  }}</td>
-                    <td>{{ receta.paciente }}</td>
-                    <td>{{ receta.fechareceta  }}</td>
+                    <td align="center" >{{ receta.idreceta  }}</td>
+                    <td align="center" >{{ receta.paciente }}</td>
+                    <td align="center" >{{ receta.fechareceta  }}</td>
                 </tr>
-           
         </tbody>
     </table>
-
+    <br>
+    <h2>Medicamentos: {{ receta.medicamentos }}</h2>
+    <h2>Tratamiento: {{ receta.tratamiento }}</h2>
 </body>
 </html>
