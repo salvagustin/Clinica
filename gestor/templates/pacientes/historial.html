@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} | Historial {% endblock title %}
+
+{% block content %}
+
+<div class="text-center">
+    <br><br>
+    <h1>Historial</h1>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Nombre: {{nombre}} </h4>
+    </div>
+    <div class="content7">
+        <h4>Total: {{conteo}} </h4>
+    </div>
+</div>
+<div class="container">
+    <div class="tbl_container">
+        <table class="tbl">
+            <thead>
+                <th>Numero</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th colspan="2">Observaciones</th>
+            </thead>
+            <tbody>
+                {% for consulta in entity %}
+                
+                    <tr>  
+                        <td data-lable="Numero:">{{ consulta.idconsulta }}</td>
+                        <td data-lable="Fecha:">{{ consulta.fechaconsulta }}</td>
+                        <td data-lable="Fecha:">{{ consulta.horaconsulta }}</td>
+                        <td data-lable="Tipo:">{{ consulta.tipo }}</td>
+                        <td data-lable="Obs:">{{ consulta.observaciones|truncatechars:50 }}</td>
+                        <td><a class="btn btn-outline-secondary" onclick="consultadetalles(
+                            detalles = '{{consulta.observaciones}}'
+                        )">Detalles</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include "paginacion.html" %}
+    </div>
+</div>
+{% endblock content %}

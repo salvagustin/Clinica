@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+
+{% block title %} | Pacientes {% endblock title %}
+
+{% block content %}
+<div class="text-center">
+    <br><br>
+    <h1>Pacientes</h1>
+</div>
+<div class="content">
+    <div class="content2">
+        <div class="content3">
+            <a class="btn btn-primary" href="/agregarpaciente/">Agregar</a>
+        </div>
+        <div class="content4">
+            <a class="btn btn-secondary" href="/pacientes/">Restablecer</a>
+        </div>
+    </div>
+    <div class="content2">
+        <div class="content5">
+            <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" name="nombre" >
+        </div>
+        <div class="content6">
+            <button class="btn btn-outline-success"  onclick="buscar_paciente()">Buscar</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="tbl_container">
+        <br>
+        <table class="tbl">
+            <thead>
+                <th>Nombre</th>
+                <th>Fecha nacimiento</th>
+                <th>Telefono</th>
+                <th>Acciones</th>
+            </thead>
+            <tbody>
+            {% for paciente in entity %}
+                <tr>
+                    <td data-lable="Nombre:">{{ paciente.nombre }}</td>
+                    <td data-lable="Fecha nac:">{{ paciente.fecha_nacimiento }}</td>
+                    <td data-lable="Telefono:">{{ paciente.telefono}}</td>
+                    <td class="centrado2">
+                        <a class="btn btn-secondary" href="/editarpaciente/{{paciente.idpaciente}}/">Editar</a>
+                        <button type="button" class="btn btn-danger" onclick="eliminarregistro(
+                            id = '{{ paciente.idpaciente}}', 
+                            objeto='paciente',
+                            objeto2='{{paciente.nombre}}'
+                            )">Eliminar</button>
+                        <a class="btn btn-info" href="/historial/{{paciente.idpaciente}}/">Historial</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    {% include "paginacion.html" %}
+    </div>
+</div>
+
+
+    {% if mensaje == 1 %}
+    <script>
+        swal({
+            title: "!Dato no encontrado!",
+            text: "No existe ese paciente!",
+            icon: "info",
+        })
+        .then((willDelete) => {
+            if (willDelete) { 
+                location.href = "/pacientes/"
+            } 
+        });
+    </script>
+    {% else %}
+        {% if  mensaje == 2 %}
+        <script>
+            swal({ //EN PRUEBA
+                title: "!Paciente Creado!",
+                text: "",
+                timer: 2000,
+                showConfirmButton: false});
+        </script>
+        {% endif %}
+    {% endif %}
+{% endblock content %}

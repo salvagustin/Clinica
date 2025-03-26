@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} | Registro de Cita {% endblock title %}
+{% block extrahead %}
+{{citaform.media }}
+{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="container">
+    <div class="text-center">
+        <br><br>
+        <h1>Editar cita</h1>
+        
+    </div>
+</div>
+<br>
+{% load crispy_forms_tags %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Numero: {{ cita.idcita }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {{ citaform |crispy}}
+                       
+                        <div class="content">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a class="btn btn-secondary" href="/citas/">Cancelar</a>
+                            <button type="button" class="btn btn-danger" onclick="eliminarregistro(
+                                id = '{{ cita.idcita}}', 
+                                objeto='cita',
+                                objeto2='{{cita.fechacita}}'
+                                )">Eliminar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if mensaje == 1 %}
+<script>
+    swal("Este horario esta ocupado");
+</script>
+{% endif %}
+{% endblock content %}

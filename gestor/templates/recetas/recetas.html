@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %} | Consultas {% endblock title %}
+
+{% block content %}
+<div class="text-center">
+    <br><br>
+        <h1>Recetas</h1>
+</div>
+<div class="content">
+    <div class="content2">
+        <div class="content3">
+            <a class="btn btn-primary" href="/agregarreceta/">Agregar</a>
+        </div>
+        <div class="content4">
+            <a class="btn btn-secondary" href="/recetas/">Restablecer</a>
+        </div>
+    </div>
+    <div class="content2">
+        <div class="content5">
+            <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" name="receta">
+        </div>
+        <div class="content6">
+            <button class="btn btn-outline-success" type="submit" onclick="buscar_receta()">Buscar</button>
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="tbl_container">
+        <br>
+        <table class="tbl">
+            <thead>
+                <th>Numero</th>
+                <th>Paciente</th>
+                <th>Fecha</th>
+                <th>Indicaciones</th>
+                <th>Acciones</th>
+            </thead>
+            <tbody>
+                {% for receta in entity %}
+                    <tr>
+                        <td data-lable="Numero:">{{ receta.idreceta }}</td>
+                        <td data-lable="Fecha:">{{ receta.consulta.paciente.nombre|truncatechars:20 }}</td>
+                        <td data-lable="Hora:">{{ receta.fechareceta }}</td>
+                        <td data-lable="Cobro:">${{ receta.indicaciones }}</td>
+                        <td class="centrado2">
+                            <a class="btn btn-secondary" href="/editarreceta/{{receta.idreceta}}/">Editar</a>
+                           
+                            <button type="button" class="btn btn-danger" onclick="eliminarregistro(
+                                id = '{{ receta.idreceta}}', 
+                                objeto='receta',
+                                objeto2='{{receta.fechareceta}}'
+                                )">Eliminar</a> 
+    
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {% include "paginacion.html" %}
+    </div>
+</div>
+
+    {% if mensaje == 1 %}
+    <script>
+        swal({
+            title: "!Dato no encontrado!",
+            text: "No existe ese paciente!",
+            icon: "info",
+        })
+        .then((willDelete) => {
+            if (willDelete) { 
+                location.href = "/consultas/"
+            } 
+        });
+    </script>
+    {% else %}
+        {% if  mensaje == 2 %}
+        <script>
+            swal({      // ESTA EN PRUEBAAA
+                title: "!Consulta Creada!",
+                text: "",
+                timer: 2000,
+                showConfirmButton: false});
+        </script>
+        {% endif %}
+    {% endif %}
+{% endblock content %}

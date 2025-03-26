@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %} | Citas {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center">
+        <br><br>
+        <h1>Citas de: {{mes}} </h1>
+    </div>
+</div>
+<div class="content">
+    <div class="content2">
+        <div class="content3">
+            <a class="btn btn-primary" href="/agregarcita/">Agregar</a>
+        </div>
+        <div class="content4">        
+            <a class="btn btn-secondary" href="/citas/">Restablecer</a>
+        </div>
+    </div>
+    <div class="content2">
+        <div class="content3">
+            <h4>Semana: {{semana}} </h4>
+        </div>
+        <div class="content4">
+            <h4>Citas: {{ conteocitas }}</h4>
+        </div>
+    </div>
+    <div class="content2">
+        <div class="content3">
+            <input type="week" name="week">
+        </div>
+        <div class="content4">
+            <button class="btn btn-outline-success"  onclick="buscarsemana()">Buscar</button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="tbl_container"></div>
+        <table class="tbl">
+            <thead style="text-align: center;">
+                <th>Hora/Dia</th>
+                <th>Lunes: {{ fechalunes }}</th>
+                <th>Martes: {{ fechamartes }}</th>
+                <th>Miercoles: {{ fechamiercoles }}</th>
+                <th>Jueves: {{ fechajueves }}</th>
+                <th>Viernes: {{ fechaviernes }}</th>
+            </thead>
+            <tbody>
+                    <tr>{% for cita in citas1 %}
+                        <td  class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>8:00 - 9:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm " href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas2 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>9:00 - 10:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas3 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>10:00 - 11:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas4 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>11:00 - 12:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas5 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>01:00 - 02:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas6 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>02:00 - 03:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas7 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>03:00 - 04:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas8 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>04:00 - 05:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+                    <tr>{% for cita in citas9 %}
+                        <td class="tdcitas">                       
+                                {% if cita == 1 %}
+                                    <h6>05:00 - 06:00</h6>
+                                {% else %}
+                                        {% if cita == 2 %}
+                                            <h6 style="color: crimson;">Disponible</h6>
+                                            {% else %}
+                                                <a class="btn btn-sm" href="/editarcita/{{cita.idcita}}/"><h6>{{cita.paciente.nombre|truncatechars:20}}</h6></a>
+                                    {% endif %}
+                                {% endif %}                                    
+                        </td>
+                        {% endfor %}   
+                    </tr>
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+   
+    <!--{% include "paginacion.html" %}-->
+
+{% endblock content %}
