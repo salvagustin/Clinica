@@ -8,7 +8,9 @@ from django.http import Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.db.models import Sum
+from django.views.generic import View
 from datetime import timedelta
+from .utils import render_to_pdf
 import datetime
 
 #OBTENER FECHA ACTUAL Y FORMATEAR SEMANA Y MES ACTUALES
@@ -909,3 +911,16 @@ def buscar_receta(request, name=None):
         'mensaje': existe,
         }    
     return render(request, 'Recetas/recetas.html', data)
+
+#LISTVIEW PARA EXPORTAR RECETA A PDF\
+class imprimirreceta(View):
+
+    def get(self, request,idreceta, *args, **kwargs):
+        receta = Receta.objects.get(idreceta = idreceta)
+        data = {
+            
+            'receta': receta
+        }
+        pdf = render_to_pdf('recetas/imprimirreceta.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+        

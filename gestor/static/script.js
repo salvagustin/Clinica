@@ -21,7 +21,7 @@ function eliminarregistro(id,objeto,objeto2){
 			}
 		});
 	}
-
+/*FUNCION PARA BUSCAR CITAS POR SEMANA*/
 function buscarsemana(){
 	const week = document.getElementsByName('week')[0].value;
 	if( week == null || week.length == 0 || exp.test(week) ) {
@@ -36,7 +36,7 @@ function buscarsemana(){
 		location.href = "/buscarsemana/"+ numano + "/"+ numse
 	}	
 }
-
+/*FUNCION PARA BUSCAR PACIENTE*/
 function buscar_paciente(){
 	const name = document.getElementsByName('nombre')[0].value;
 	if( name == null || name.length == 0 || exp.test(name) ) {
@@ -52,6 +52,8 @@ function buscar_paciente(){
 		location.href = "/buscarpaciente/"+ name
 	}	
 }
+
+/*FUNCION PARA BUSCAR CONSULTA POR PACIENTE*/
 function buscar_consulta(){
 	const name = document.getElementsByName('consulta')[0].value;
 	if( name == null || name.length == 0 || exp.test(name) ) {
@@ -66,6 +68,7 @@ function buscar_consulta(){
 		location.href = "/buscarconsulta/"+ name
 	}	
 }
+/*FUNCION PARA BUSCAR RECETA POR PACIENTE*/
 function buscar_receta(){
 	const name = document.getElementsByName('receta')[0].value;
 	if( name == null || name.length == 0 || exp.test(name) ) {
