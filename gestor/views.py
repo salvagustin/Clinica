@@ -20,6 +20,20 @@ semanaactual = horayfecha.isocalendar().week
 anoactual = horayfecha.isocalendar().year
 mesactualnumero = horayfecha.strftime("%m").capitalize()
 
+
+#LISTVIEW PARA EXPORTAR RECETA A PDF\
+class imprimirreceta(View):
+
+    def get(self, request,pk, *args, **kwargs):
+        receta = Receta.objects.get(idreceta = pk)
+        data = {
+            
+            'receta': receta
+        }
+        pdf = render_to_pdf('recetas/imprimirreceta.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+
 # FUNCION PARA OBTENER EL PRIMER DIA DE LA UNA SEMANA INGRESADA
 def first_day_of_iso_week(year, week):
     date = datetime.datetime(year, 1, 4)
@@ -912,15 +926,4 @@ def buscar_receta(request, name=None):
         }    
     return render(request, 'Recetas/recetas.html', data)
 
-#LISTVIEW PARA EXPORTAR RECETA A PDF\
-class imprimirreceta(View):
 
-    def get(self, request,idreceta, *args, **kwargs):
-        receta = Receta.objects.get(idreceta = idreceta)
-        data = {
-            
-            'receta': receta
-        }
-        pdf = render_to_pdf('recetas/imprimirreceta.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-        

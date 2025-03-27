@@ -35,5 +35,5 @@ urlpatterns = [
     path('editarreceta/<int:pk>/', editar_receta),
     path('eliminarreceta/<int:pk>/', eliminar_receta),
     path('buscarreceta/<name>',buscar_receta),
-    path('imprimirreceta/<int:idreceta>', views.imprimirreceta.as_view(), name='imprimirreceta'),
+    path('imprimirreceta/<int:pk>/', views.imprimirreceta.as_view(), name='imprimirreceta'),
 ]

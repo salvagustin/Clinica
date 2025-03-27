@@ -7,12 +7,11 @@
 </head>
 <body>
     <h2>Receta</h2>
-    <h3>Cantidad empleados: {{ count }}</h3>
+    
     <table border="1">
         <thead>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Trabajo</th>
+            <th>Nombre:{{ receta.consulta.paciente.nombre  }}</th>
+            <th>Fecha: {{receta.fechareceta }}</th>
         </thead>
         <tbody>
             
