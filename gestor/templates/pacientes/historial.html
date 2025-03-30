@@ -13,7 +13,7 @@
         <h4 name="nombre">Nombre: {{nombre}} </h4>
     </div>
     <div class="content7">
-        <h4>Total: {{conteo}} </h4>
+        <h5>Total: {{conteo}} </h5>
     </div>
 </div>
 <div class="container">
@@ -23,8 +23,7 @@
                 <th>Numero</th>
                 <th>Fecha</th>
                 <th>Hora</th>
-                <th>Tipo</th>
-                <th colspan="2">Observaciones</th>
+                <th colspan="2">Diagnostico</th>
             </thead>
             <tbody>
                 {% for consulta in entity %}
@@ -33,11 +32,9 @@
                         <td data-lable="Numero:">{{ consulta.idconsulta }}</td>
                         <td data-lable="Fecha:">{{ consulta.fechaconsulta }}</td>
                         <td data-lable="Fecha:">{{ consulta.horaconsulta }}</td>
-                        <td data-lable="Tipo:">{{ consulta.tipo }}</td>
-                        <td data-lable="Obs:">{{ consulta.observaciones|truncatechars:50 }}</td>
-                        <td><a class="btn btn-outline-secondary" onclick="consultadetalles(
-                            detalles = '{{consulta.observaciones}}'
-                        )">Detalles</a></td>
+                        <td data-lable="Obs:">{{ consulta.diagnostico|truncatechars:50 }}</td>
+                        <td><a class="btn btn-outline-secondary" href="/historialid/{{consulta.idconsulta}}/"
+                        >Detalles</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

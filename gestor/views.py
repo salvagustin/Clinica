@@ -21,19 +21,6 @@ anoactual = horayfecha.isocalendar().year
 mesactualnumero = horayfecha.strftime("%m").capitalize()
 
 
-#LISTVIEW PARA EXPORTAR RECETA A PDF\
-class imprimirreceta(View):
-
-    def get(self, request,pk, *args, **kwargs):
-        receta = Receta.objects.get(idreceta = pk)
-        data = {
-            
-            'receta': receta
-        }
-        pdf = render_to_pdf('recetas/imprimirreceta.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-
-
 # FUNCION PARA OBTENER EL PRIMER DIA DE LA UNA SEMANA INGRESADA
 def first_day_of_iso_week(year, week):
     date = datetime.datetime(year, 1, 4)
@@ -77,21 +64,15 @@ def nombre_mes(mesactualnumero):
     return mesactual
 
 #######################################################################
-# Create your views here.
-@login_required
-def home(request):
-    return render(request, 'base.html' )
-
-@login_required
-def inicio(request):
-
+# FUNCION PARA OBTENER LA INFORMACION DEL INDEX
+def infohome():
     citasdiarias = Cita.objects.filter(fechacita=horayfecha).count()
     proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=8)
     consultasdiarias = Consulta.objects.filter(fechaconsulta=horayfecha).count()
-    #devengadodiario = Consulta.objects.filter(fechaconsulta=horayfecha).aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
+    devengadodiario = Consulta.objects.filter(fechaconsulta=horayfecha).aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
    
-    #if devengadodiario == None:
-     #   devengadodiario=0
+    if devengadodiario == None:
+        devengadodiario=0
 
     if horaactual > 0 and horaactual < 7:
         proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=8)
@@ -122,14 +103,23 @@ def inicio(request):
         'proximacita':proximacita,
         'citashoy':citasdiarias,
         'consultashoy':consultasdiarias,
-        #'devengadohoy':devengadodiario
+        'devengadohoy':devengadodiario
     }
+    return data
+
+
+@login_required
+def inicio(request):
+
+    data = infohome()
     return render(request, 'index.html',data)
 
 @login_required
 def salir(request):
     logout(request)
     return redirect('login.html')
+
+
 
 #################### ESTADISTICAS ###################################
 @login_required
@@ -166,6 +156,8 @@ def estadisticas(request):
     }
 
     return render(request, 'estadisticas.html', data)
+
+
 
 ########################### CITAS ##############################################
 
@@ -306,7 +298,6 @@ def ListaCitas(request):
     }
     
     return render(request, 'Citas/citas.html',data)
-
 
 #FUNCION PARA OBTENER LAS CITAS DE LA SEMANA BUSCADA
 @login_required
@@ -537,6 +528,8 @@ def eliminar_cita(request, pk=None):
     return redirect('/citas/')
 
     
+
+
 ########################## PACIENTES ################################################
 
 #VISTA LISTAR PACIENTES
@@ -624,7 +617,7 @@ def eliminar_paciente(request, pk=None):
     Paciente.objects.filter(pk=pk).delete()
     return redirect('/pacientes/')
 
-#VISTA PARA MOSTRAR EL HISTORIAL DEL PACIENTE
+#VISTA PARA MOSTRAR EL HISTORIAL DE PACIENTES
 def paciente_historial(request,pk=None):
     conteo = Consulta.objects.filter(paciente__idpaciente=pk).count()
     paciente = Paciente.objects.get(pk=pk)
@@ -642,9 +635,18 @@ def paciente_historial(request,pk=None):
         'conteo': conteo,
         'paginator':paginator
     }
-    print(nombre)
     return render(request,'Pacientes/historial.html/',data)
 
+#VISTA PARA MOSTRAR EL HISTORIAL DEL PACIENTE DETALLADO
+def paciente_historialid(request,pk=None):
+    consult = Consulta.objects.get(idconsulta=pk)
+    receta = Receta.objects.get(consulta__idconsulta=pk)
+    data={
+        'consulta':consult,
+        'receta':receta
+    }
+    
+    return render(request,'Pacientes/historialid.html/',data)
 #VISTA PARA BUSCAR PACIENTES
 @login_required
 def buscar_paciente(request, name):
@@ -662,9 +664,7 @@ def buscar_paciente(request, name):
                 data = {
                     'entity': pacientes,
                     'paginator':paginator
-
                 }
-            
                 return render(request, 'Pacientes/pacientes.html', data)
     else:
         existe = 1
@@ -682,6 +682,35 @@ def buscar_paciente(request, name):
         'mensaje': existe,
         }    
     return render(request, 'Pacientes/pacientes.html', data)
+
+#VISTA PARA BUSCAR PACIENTES EN INDEX
+@login_required
+def buscar_paciente_index(request, name):
+    
+    pacientes = Paciente.objects.filter(nombre__icontains=name).order_by('nombre')
+    if len(pacientes) >= 1:
+                pagina = request.GET.get("page", 1)
+
+                try:
+                    paginator = Paginator(pacientes, 10)
+                    pacientes = paginator.page(pagina)
+                except:
+                    raise Http404
+
+                data = {
+                    'entity': pacientes,
+                    'paginator':paginator
+                }
+                
+                return render(request, 'Pacientes/pacientes.html', data)
+    else:
+        mensaje=1
+        data = infohome()
+        data.update({'mensaje':mensaje})
+       
+    return render(request, 'index.html', data)
+
+
 
 ########################### CONSULTAS ###############################################
 
@@ -716,7 +745,8 @@ def crear_consulta(request):
         form = ConsultaForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/consultas/')
+            
+            return redirect('/agregarreceta/')
         else:
             form = ConsultaForm(data=request.POST)
             return render(
@@ -805,6 +835,7 @@ def buscar_consulta(request, name=None):
     return render(request, 'Consultas/consultas.html', data)
 
 
+
 ########################### RECETAS ###############################################
 
 #VISTA PARA LISTAR RECETAS
@@ -835,9 +866,13 @@ def crear_receta(request):
             {'RecetaForm': RecetaForm}
         )
     if request.method == 'POST':
-        form = RecetaForm(data=request.POST)
+        form = RecetaForm(data=request.POST,)
         if form.is_valid():
+            consulta = Consulta.objects.all().last()
+            print(consulta.idconsulta)
+            form.instance.consulta=consulta
             form.save()
+            print('receta guardada')
             return redirect('/recetas/')
         else:
             form = RecetaForm(data=request.POST)
@@ -926,4 +961,14 @@ def buscar_receta(request, name=None):
         }    
     return render(request, 'Recetas/recetas.html', data)
 
+#LISTVIEW PARA EXPORTAR RECETA A PDF
+class imprimirreceta(View):
 
+    def get(self, request,pk, *args, **kwargs):
+        receta = Receta.objects.get(idreceta = pk)
+        data = {
+            
+            'receta': receta
+        }
+        pdf = render_to_pdf('recetas/imprimirreceta.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')

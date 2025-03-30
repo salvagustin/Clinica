@@ -6,17 +6,38 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Receta</h2>
+    <h1>Receta</h1>
     
-    <table border="1">
-        <thead>
-            <th>Nombre:{{ receta.consulta.paciente.nombre  }}</th>
-            <th>Fecha: {{receta.fechareceta }}</th>
-        </thead>
-        <tbody>
-            
-        </tbody>
-    </table>
-
+    <div class="content">
+        <div class="content6">       
+            <h3 name="nombre">Nombre: {{ receta.consulta.paciente }} </h2>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content6">       
+            <h3 name="nombre">Fecha: {{ receta.fechareceta }} </h2>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="content6">       
+            <h3 name="nombre">Medicamento:{{ receta.medicamento }} </h2>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content6">       
+            <h3 name="nombre">Dosis:{{ receta.dosis }} </h2>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content6">       
+            <h3 name="nombre">Duracion:{{ receta.duracion }} </h2>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content6">       
+            <h3 name="nombre">Indicaciones:{{ receta.indicaciones }} </h2>
+        </div>
+    </div>
 </body>
 </html>

@@ -48,7 +48,7 @@ class CitaForm(forms.ModelForm):
 class RecetaForm(forms.ModelForm):
     class Meta:
         model = Receta
-        fields = '__all__'
+        fields = [ 'medicamento', 'dosis', 'duracion', 'indicaciones']
         widgets = {'medicamento':forms.Textarea(attrs={'placeholder': 'Nombre del medicamento','autocomplete':'off',"rows":5}),
                    'dosis':forms.Textarea(attrs={'placeholder': 'Dosis','autocomplete':'off',"rows":5}),
                    'indicaciones':forms.Textarea(attrs={'placeholder': 'Indicaciones','autocomplete':'off',"rows":5}),

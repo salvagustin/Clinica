@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %} | Historial {% endblock title %}
+
+{% block content %}
+
+<div class="text-center">
+    <br><br>
+    <h1>Historial detallado</h1>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Nombre: {{ consulta.paciente }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Fecha:{{ consulta.fechaconsulta }} </h4>
+    </div>
+</div> 
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Peso: {{ consulta.peso }}</h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Altura: {{ consulta.altura }}</h4>
+    </div>
+</div>
+<div class="content">  
+    <div class="content6">       
+        <h4 name="nombre">Temperatura:{{ consulta.temperatura }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Presion arterial:{{ consulta.presionarterial }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Diagnostico:{{ consulta.diagnostico }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Medicamento:{{ receta.medicamento }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Dosis:{{ receta.dosis }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Duracion:{{ receta.duracion }} </h4>
+    </div>
+</div>
+<div class="content">
+    <div class="content6">       
+        <h4 name="nombre">Indicaciones:{{ receta.indicaciones }} </h4>
+    </div>
+</div>
+{% endblock content %}

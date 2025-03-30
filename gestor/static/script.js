@@ -39,19 +39,36 @@ function buscarsemana(){
 /*FUNCION PARA BUSCAR PACIENTE*/
 function buscar_paciente(){
 	const name = document.getElementsByName('nombre')[0].value;
+	
 	if( name == null || name.length == 0 || exp.test(name) ) {
 		location.href = "/pacientes/"
 		swal({
 			title: "!Campo vacio!",
-			text: "Seleccione un nombre",
+			text: "Escriba un nombre",
 			timer: 5000,
 			showConfirmButton: false});
 			
 	}else{
-
 		location.href = "/buscarpaciente/"+ name
 	}	
 }
+
+/*FUNCION PARA BUSCAR PACIENTE EN INDEX*/
+function buscar_paciente_index(){
+	const name = document.getElementsByName('nombre')[0].value;
+	
+	if( name == null || name.length == 0 || exp.test(name) ) {
+		location.href = "/inicio/"
+		swal({
+			title: "!Campo vacio!",
+			text: "Escriba un nombre",
+			timer: 5000,
+			showConfirmButton: false});	
+	}else{
+		location.href = "/buscarpacienteindex/"+ name 
+	}	
+}
+
 
 /*FUNCION PARA BUSCAR CONSULTA POR PACIENTE*/
 function buscar_consulta(){
@@ -59,12 +76,11 @@ function buscar_consulta(){
 	if( name == null || name.length == 0 || exp.test(name) ) {
 		swal({
 			title: "!Campo vacio!",
-			text: "Seleccione un nombre",
+			text: "Escriba un nombre",
 			timer: 3000,
 			showConfirmButton: false});
 			location.href = "/consultas/"
 	}else{
-
 		location.href = "/buscarconsulta/"+ name
 	}	
 }
@@ -74,12 +90,11 @@ function buscar_receta(){
 	if( name == null || name.length == 0 || exp.test(name) ) {
 		swal({
 			title: "!Campo vacio!",
-			text: "Seleccione un nombre",
+			text: "Escriba un nombre",
 			timer: 3000,
 			showConfirmButton: false});
 			location.href = "/recetas/"
 	}else{
-
 		location.href = "/buscarreceta/"+ name
 	}	
 }

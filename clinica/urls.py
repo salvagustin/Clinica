@@ -16,7 +16,9 @@ urlpatterns = [
     path('editarpaciente/<int:pk>/', editar_paciente),
     path('eliminarpaciente/<int:pk>/', eliminar_paciente),
     path('historial/<int:pk>/', paciente_historial),
+    path('historialid/<int:pk>/', paciente_historialid),
     path('buscarpaciente/<name>/', buscar_paciente),
+    path('buscarpacienteindex/<name>/', buscar_paciente_index),
     #DIRECCION CONSULTAS
     path('consultas/', ListaConsultas),
     path('agregarconsulta/', crear_consulta),

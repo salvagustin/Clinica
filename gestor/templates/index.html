@@ -12,9 +12,10 @@
   <a class="btn btn-outline-success" href="/agregarcita/">Agregar cita</a>
   <a class="btn btn-outline-success" href="/agregarconsulta/">Agregar consulta</a>
   
-    <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" name="consulta">
+    <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" name="nombre" 
+            autocomplete="off">
 
-    <button class="btn btn-outline-success" type="submit" onclick="buscar_consulta()">Buscar</button>
+    <button class="btn btn-outline-success" type="submit" onclick="buscar_paciente_index()">Buscar</button>
 
 
 </div>
@@ -36,5 +37,13 @@
     <h4>Devengado:${{devengadohoy}}  </h4>
   </div>
 </div>
-
+{% if mensaje == 1 %}
+    <script>
+        swal({
+            title: "!Dato no encontrado!",
+            text: "No existe ese paciente!",
+            icon: "info",
+        });
+    </script>
+{% endif %}
 {% endblock content %}>
