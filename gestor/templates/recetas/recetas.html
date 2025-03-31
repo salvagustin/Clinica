@@ -43,7 +43,7 @@
                         <td data-lable="Numero:">{{ receta.idreceta }}</td>
                         <td data-lable="Fecha:">{{ receta.consulta.paciente.nombre|truncatechars:20 }}</td>
                         <td data-lable="Hora:">{{ receta.fechareceta }}</td>
-                        <td data-lable="Cobro:">${{ receta.indicaciones }}</td>
+                        <td data-lable="Cobro:">{{ receta.indicaciones }}</td>
                         <td class="centrado2">
                             <a class="btn btn-secondary" href="/editarreceta/{{receta.idreceta}}/">Editar</a>
                            

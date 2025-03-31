@@ -118,7 +118,7 @@ nav.open ~ .overlay {
 
 
 
-/*DISENO PARA ESTADISTICAS*/
+/*DISENO PARA ESTADISTICAS Y HOME*/
 .container_1{
   background-color: hsl(240, 51%, 74%);
   display: flex;
@@ -132,7 +132,12 @@ nav.open ~ .overlay {
   border: 1px solid black;
   margin: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 25%;
+  height: 70px;
 }
 .container_home{
   border: 1px solid black;
@@ -141,7 +146,16 @@ nav.open ~ .overlay {
   flex-direction: row;
 }
 
-
+.tdcitas{
+  border: 1px solid black;
+  margin: 10px;
+  text-align: center;
+ 
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 60px;
+}
 
 
 
@@ -175,7 +189,6 @@ nav.open ~ .overlay {
   flex-direction: row;
   justify-content: space-evenly;
 }
-
 
 
 /* DISENO DE LOS BOTONTES AGREGAR RESTABLECER Y BUSCAR*/

@@ -188,7 +188,7 @@ def ListaCitas(request):
         else:
             for cita1 in citas_1: 
                 citas1.append(cita1)       
-    
+
     #FOR QUE CONSULTA LAS CITAS PARA LA HORA DE 9 A 10
     citas2 = []
     citas2.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
@@ -319,7 +319,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas1 = []
     citas1.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_1 = Cita.objects.filter(horacita=1, fechacita__week=numse, fechacita__week_day=i, fechacita__year=numano)
+        citas_1 = Cita.objects.filter(horacita=8, fechacita__week=numse, fechacita__week_day=i, fechacita__year=numano)
         
         if len(citas_1) == 0:
             citas1.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
@@ -331,7 +331,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas2 = []
     citas2.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_2 = Cita.objects.filter(horacita=2, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_2 = Cita.objects.filter(horacita=9, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_2) == 0:
             citas2.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -342,7 +342,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas3 = []
     citas3.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_3 = Cita.objects.filter(horacita=3, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_3 = Cita.objects.filter(horacita=10, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_3) == 0:
             citas3.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -353,7 +353,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas4 = []
     citas4.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_4 = Cita.objects.filter(horacita=4, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_4 = Cita.objects.filter(horacita=11, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_4) == 0:
             citas4.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -364,7 +364,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas5 = []
     citas5.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_5 = Cita.objects.filter(horacita=5, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_5 = Cita.objects.filter(horacita=13, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_5) == 0:
             citas5.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -375,7 +375,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas6 = []
     citas6.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_6 = Cita.objects.filter(horacita=6, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_6 = Cita.objects.filter(horacita=14, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_6) == 0:
             citas6.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -386,7 +386,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas7 = []
     citas7.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_7 = Cita.objects.filter(horacita=7, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_7 = Cita.objects.filter(horacita=15, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_7) == 0:
             citas7.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -397,7 +397,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas8 = []
     citas8.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_8 = Cita.objects.filter(horacita=8, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_8 = Cita.objects.filter(horacita=16, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_8) == 0:
             citas8.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:
@@ -408,7 +408,7 @@ def buscar_semana(request, numano=None,numse=None):
     citas9 = []
     citas9.append(1)#AGREGAMOS 1 PARA MOSTRAR LA HORA
     for i in range(2,7):
-        citas_9 = Cita.objects.filter(horacita=9, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
+        citas_9 = Cita.objects.filter(horacita=17, fechacita__week=numse, fechacita__week_day=i,fechacita__year=numano)
         if len(citas_9) == 0:
             citas9.append(2)#AGREGAMOS 2 PARA MOSTRAR DISPONIBILIDAD EN LA CITA
         else:

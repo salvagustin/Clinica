@@ -21,10 +21,10 @@
 </div>
 <div class="container_home">
   <div class="container_estad_2">
-    <h4>Proxima cita</h4>
+    
     {% for cita in proximacita %}
-    <h4>Paciente:  {{cita.paciente.nombre}}</h4>
-    <h4>Hora:  {{cita.horacita}}</h4>
+    <h5>Paciente:  {{cita.paciente.nombre|truncatechars:15}}</h5>
+    <h5>Hora:  {{cita.horacita}}</h5>
     {% endfor %}
   </div>
   <div class="container_estad_2">
