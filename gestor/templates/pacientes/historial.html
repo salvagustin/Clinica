@@ -34,7 +34,7 @@
                         <td data-lable="Fecha:">{{ consulta.horaconsulta }}</td>
                         <td data-lable="Obs:">{{ consulta.diagnostico|truncatechars:50 }}</td>
                         <td><a class="btn btn-outline-secondary" href="/historialid/{{consulta.idconsulta}}/"
-                        >Detalles</a></td>
+                            role="button" target ="_blank">Detalles</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

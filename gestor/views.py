@@ -8,10 +8,13 @@ from django.http import Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.db.models import Sum
+from collections import defaultdict
+from django.db.models.expressions import RawSQL
 from django.views.generic import View
-from datetime import timedelta
+from datetime import timedelta, date
 from .utils import render_to_pdf
 import datetime
+
 
 #OBTENER FECHA ACTUAL Y FORMATEAR SEMANA Y MES ACTUALES
 horayfecha = datetime.datetime.now()
@@ -67,43 +70,20 @@ def nombre_mes(mesactualnumero):
 # FUNCION PARA OBTENER LA INFORMACION DEL INDEX
 def infohome():
     citasdiarias = Cita.objects.filter(fechacita=horayfecha).count()
-    proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=8)
+    proximacita = Cita.objects.filter(fechacita=horayfecha)
     consultasdiarias = Consulta.objects.filter(fechaconsulta=horayfecha).count()
     devengadodiario = Consulta.objects.filter(fechaconsulta=horayfecha).aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
    
     if devengadodiario == None:
         devengadodiario=0
 
-    if horaactual > 0 and horaactual < 7:
-        proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=8)
-    elif horaactual > 7:
-        match horaactual:
-            case 8:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=9)
-            case 9:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=10)
-            case 10:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=11)
-            case 11:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=13)
-            case 12:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=13)
-            case 13:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=14)
-            case 14:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=15)
-            case 15:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=16)
-            case 16:
-                proximacita = Cita.objects.filter(fechacita=horayfecha,horacita=17)
-    elif horaactual > 17:
-            proximacita = 'Dia terminado'
+    
 
     data={
         'proximacita':proximacita,
         'citashoy':citasdiarias,
         'consultashoy':consultasdiarias,
-        'devengadohoy':devengadodiario
+        'devengadohoy':devengadodiario          
     }
     return data
 
@@ -119,7 +99,392 @@ def salir(request):
     logout(request)
     return redirect('login.html')
 
+######### FUNCION PARA CREAR EL GRAFICO DE CONTEO DE CONSULTAS
+@login_required
+def get_chart(request):
+    #FOR QUE CONSULTA EL TOTAL DE CONSULTAS POR MES
+    conteoconsultas = []
+    for i in range(1,13):
+        consulta = Consulta.objects.filter(fechaconsulta__month=i).count()
+        conteoconsultas.append(consulta)
+   
+    colors = ['#5470C6']
 
+    chart = {
+        'title': {
+            'text': 'Consultas por Mes',
+            'left': 'center',
+            'textStyle': {
+                'fontSize': 18,
+                'fontWeight': 'bold'
+            }
+        },
+        'color': colors,
+        'tooltip': {
+            'trigger': 'axis',
+            'axisPointer': {
+                'type': 'shadow'  # mejor visual con barras
+            }
+        },
+        'toolbox': {
+            'feature': {
+                'saveAsImage': {'show': True},
+                'dataView': {'show': True, 'readOnly': False},
+                'restore': {'show': True}
+            },
+            'right': 20
+        },
+        'legend': {
+            'data': ['Consultas'],
+            'top': '10%'
+        },
+        'grid': {
+            'left': '3%',
+            'right': '4%',
+            'bottom': '5%',
+            'containLabel': True
+        },
+        'xAxis': [
+            {
+                'type': "category",
+                'data': ["En", "Feb", "Mar", "Ab", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dec"],
+                'axisTick': {'alignWithLabel': True},
+                'axisLine': {'lineStyle': {'color': '#aaa'}}
+            }
+        ],
+        'yAxis': [
+            {
+                'type': "value",
+                'axisLine': {'lineStyle': {'color': '#aaa'}},
+                'splitLine': {'lineStyle': {'type': 'dashed'}}
+            }
+        ],
+        'series': [
+            {
+                'name': 'Consultas',
+                'type': "bar",
+                'barWidth': '60%',
+                'data': conteoconsultas,
+                'itemStyle': {
+                    'borderRadius': [5, 5, 0, 0],
+                    'color': {
+                        'type': 'linear',
+                        'x': 0,
+                        'y': 0,
+                        'x2': 0,
+                        'y2': 1,
+                        'colorStops': [
+                            {'offset': 0, 'color': '#5470C6'},
+                            {'offset': 1, 'color': '#91CC75'}
+                        ]
+                    }
+                },
+                'emphasis': {
+                    'itemStyle': {
+                        'shadowBlur': 10,
+                        'shadowOffsetX': 0,
+                        'shadowColor': 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    }
+ 
+    return JsonResponse(chart)
+
+
+######### FUNCION PARA CREAR EL GRAFICO DE SUMAR DE GANANCIAS POR MES
+@login_required
+def get_chart2(request):
+   
+    #FOR QUE CONSULTA EL TOTAL DE DEVENGADO POR MES
+    consultatotal=[]
+    for i in range(1,13):
+        sumadevengado = Consulta.objects.filter(fechaconsulta__month =i).aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
+        if sumadevengado == None:
+            sumadevengado=0 
+        consultatotal.append(sumadevengado)
+    colors = ['#73C0DE']  # azul suave para líneas
+
+    chart2 = {
+        'title': {
+            'text': 'Ganancias Mensuales',
+            'left': 'center',
+            'textStyle': {
+                'fontSize': 18,
+                'fontWeight': 'bold'
+            }
+        },
+        'color': colors,
+        'tooltip': {
+            'trigger': 'axis',
+            'axisPointer': {
+                'type': 'line',
+                'lineStyle': {
+                    'color': '#aaa',
+                    'width': 1,
+                    'type': 'dashed'
+                }
+            }
+        },
+        'toolbox': {
+            'feature': {
+                'saveAsImage': {'show': True},
+                'dataView': {'show': True, 'readOnly': False},
+                'restore': {'show': True}
+            },
+            'right': 20
+        },
+        'legend': {
+            'data': ['Ganancias'],
+            'top': '10%'
+        },
+        'grid': {
+            'left': '3%',
+            'right': '4%',
+            'bottom': '5%',
+            'containLabel': True
+        },
+        'xAxis': [
+            {
+                'type': "category",
+                'data': ["En", "Feb", "Mar", "Ab", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dec"],
+                'axisLine': {'lineStyle': {'color': '#aaa'}}
+            }
+        ],
+        'yAxis': [
+            {
+                'type': "value",
+                'axisLine': {'lineStyle': {'color': '#aaa'}},
+                'splitLine': {'lineStyle': {'type': 'dashed'}},
+                'axisLabel': {'formatter': '${value}'}
+            }
+        ],
+        'series': [
+            {
+                'name': 'Ganancias',
+                'type': "line",
+                'data': consultatotal,
+                'smooth': True,
+                'symbol': 'circle',
+                'symbolSize': 8,
+                'lineStyle': {
+                    'width': 3
+                },
+                'areaStyle': {
+                    'color': {
+                        'type': 'linear',
+                        'x': 0,
+                        'y': 0,
+                        'x2': 0,
+                        'y2': 1,
+                        'colorStops': [
+                            {'offset': 0, 'color': 'rgba(115, 192, 222, 0.5)'},
+                            {'offset': 1, 'color': 'rgba(115, 192, 222, 0)'}
+                        ]
+                    }
+                },
+                'emphasis': {
+                    'focus': 'series',
+                    'itemStyle': {
+                        'borderWidth': 2,
+                        'borderColor': '#3FB1E3',
+                        'shadowBlur': 8,
+                        'shadowColor': 'rgba(0, 0, 0, 0.3)'
+                    }
+                }
+            }
+        ]
+    }
+
+    return JsonResponse(chart2)
+
+
+######### FUNCION PARA CREAR EL GRAFICO DEL HOME
+@login_required
+def get_chart3(request):
+    colors = ['#5470C6', '#91CC75', '#EE6666']
+    
+    consultatotal = []
+    conteoconsultas = []
+    conteopacientes = []
+
+    for i in range(1, 13):
+        sumadevengado = Consulta.objects.filter(fechaconsulta__month=i).aggregate(Sum('precioconsulta')).get('precioconsulta__sum') or 0
+        consultas = Consulta.objects.filter(fechaconsulta__month=i).count()
+        pacientes = Paciente.objects.filter(fechacreacion__month=i).count()
+
+        consultatotal.append(sumadevengado)
+        conteoconsultas.append(consultas)
+        conteopacientes.append(pacientes)
+
+    chart3 = {
+        "color": colors,
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "cross"
+            }
+        },
+        "grid": {
+            "right": "20%"
+        },
+        "toolbox": {
+            "feature": {
+                "dataView": { "show": True, "readOnly": False },
+                "restore": { "show": True },
+                "saveAsImage": { "show": True }
+            }
+        },
+        "legend": {
+            "data": ["Ganancias", "Consultas", "Pacientes"]
+        },
+        "xAxis": [
+            {
+                "type": "category",
+                "axisTick": { "alignWithLabel": True },
+                "data": ["En", "Feb", "Mar", "Ab", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dec"]
+            }
+        ],
+        "yAxis": [
+            {
+                "type": "value",
+                "name": "Ganancias",
+                "position": "right",
+                "alignTicks": True,
+                "axisLine": {
+                    "show": True,
+                    "lineStyle": { "color": colors[0] }
+                },
+                "axisLabel": { "formatter": "{value} $" }
+            },
+            {
+                "type": "value",
+                "name": "Consultas",
+                "position": "right",
+                "offset": 80,
+                "alignTicks": True,
+                "axisLine": {
+                    "show": True,
+                    "lineStyle": { "color": colors[1] }
+                },
+                "axisLabel": { "formatter": "{value}" }
+            },
+            {
+                "type": "value",
+                "name": "Pacientes",
+                "position": "left",
+                "alignTicks": True,
+                "axisLine": {
+                    "show": True,
+                    "lineStyle": { "color": colors[2] }
+                },
+                "axisLabel": { "formatter": "{value}" }
+            }
+        ],
+        "series": [
+            {
+                "name": "Ganancias",
+                "type": "bar",
+                "data": consultatotal
+            },
+            {
+                "name": "Consultas",
+                "type": "bar",
+                "yAxisIndex": 1,
+                "data": conteoconsultas
+            },
+            {
+                "name": "Pacientes",
+                "type": "line",
+                "yAxisIndex": 2,
+                "data": conteopacientes
+            }
+        ]
+    }
+
+    return JsonResponse(chart3)
+
+####### FUNCION PARA CALCULAR LA EDAD DE LOS PACIENTES #####
+def calcular_edad(fecha_nacimiento):
+    hoy = date.today()
+    return hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+
+
+######### FUNCION PARA CREAR EL GRAFICO COMBINADO DE LAS ESTADISTICAS
+@login_required
+def get_chart4(request):
+
+    pacientes = Paciente.objects.all()
+    # Inicializar los rangos
+    rango_edad = {
+        '1-10 años': 0,
+        '11-18 años': 0,
+        '19-30 años': 0,
+        '31-45 años': 0,
+        '46-60 años': 0,
+        'Más de 60 años': 0
+    }
+    # Recorrer pacientes y contar por rango
+    for paciente in pacientes:
+        if paciente.fecha_nacimiento:
+            edad = calcular_edad(paciente.fecha_nacimiento)
+
+            if 1 <= edad <= 10:
+                rango_edad['1-10 años'] += 1
+            elif 11 <= edad <= 18:
+                rango_edad['11-18 años'] += 1
+            elif 19 <= edad <= 30:
+                rango_edad['19-30 años'] += 1
+            elif 31 <= edad <= 45:
+                rango_edad['31-45 años'] += 1
+            elif 46 <= edad <= 60:
+                rango_edad['46-60 años'] += 1
+            elif edad > 60:
+                rango_edad['Más de 60 años'] += 1
+   
+    # Preparar datos para el pie chart
+    pie_data = [{"name": k, "value": v} for k, v in rango_edad.items()]
+    colors = ['#5470C6', '#91CC75', '#EE6666', '#FAC858', '#73C0DE', '#3BA272']
+
+    chart4 = {
+         'title': {
+            'text': 'Edades de Pacientes',
+            'left': 'center',
+            'textStyle': {
+                'fontSize': 18,
+                'fontWeight': 'bold'
+            }
+        },
+        "color": colors,
+        "tooltip": {
+            "trigger": "item",
+            "formatter": "{a} <br/>{b}: {c} ({d}%)"
+        },
+        "legend": {
+            "orient": "vertical",
+            "left": "left",
+            "data": list(rango_edad.keys())
+        },
+        "series": [
+            {
+                "name": "Pacientes",
+                "type": "pie",
+                "radius": "70%",
+                "center": ["50%", "60%"],
+                "data": pie_data,
+                "emphasis": {
+                    "itemStyle": {
+                        "shadowBlur": 10,
+                        "shadowOffsetX": 0,
+                        "shadowColor": "rgba(0, 0, 0, 0.5)"
+                    }
+                }
+            }
+        ]
+    }
+   
+    return JsonResponse(chart4)
 
 #################### ESTADISTICAS ###################################
 @login_required

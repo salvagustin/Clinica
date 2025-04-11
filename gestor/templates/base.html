@@ -18,7 +18,7 @@
     <!--Archivos estaticos CSS y JavaScript-->
     <link rel="stylesheet" href="/static/style.css" >
     <script src="//code.jquery.com/jquery.min.js"></script>
-    <script src="{% static 'script.js' %}"></script>
+    
  
     <!-- Boxicons CSS -->
     <link
@@ -51,12 +51,7 @@
                 <span class="link">Pacientes</span>
               </a>
             </li>
-            <li class="list">
-              <a href="/citas/" class="nav-link">
-                <i class='bx bx-book-open icon'></i>
-                <span class="link">Citas</span>
-              </a>
-            </li>
+            
             <li class="list">
               <a href="/consultas/" class="nav-link">
                 <i class="bx bx-folder-open icon"></i>
@@ -104,6 +99,13 @@
      </div>
   </div>
   </body>
+
+  <script src="{% static 'script.js' %}"></script>
+<!-- SCRIPT PARA APACHE ECHARTS-->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
+
+  <!-- SCRIPT PARA MENU LATERAL-->
   <script>
     const navBar = document.querySelector("nav"),
        menuBtns = document.querySelectorAll(".menu-icon"),

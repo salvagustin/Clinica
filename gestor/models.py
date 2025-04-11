@@ -9,6 +9,7 @@ class Paciente(models.Model):
     idpaciente = models.AutoField(primary_key=True)
     nombre = models.CharField('Nombre', max_length=300)
     fecha_nacimiento = models.DateField('Fecha de nacimiento', null = False)
+    fechacreacion = models.DateField('Fecha de creacion', auto_now=True, auto_now_add=False)
     telefono = models.PositiveIntegerField('Telefono')
     Opciones = (("M", "Masculino"), ("F", "Femenino"))
     sexo =  models.CharField('Sexo', max_length=1, choices=Opciones, blank=False, null=False)

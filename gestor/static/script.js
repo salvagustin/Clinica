@@ -106,3 +106,44 @@ function consultadetalles(detalles){
 		text:  detalles});
 	
 }
+
+//FUNCION PARA CREAR GRAFICO DE CONTEO DE CONSULTAS
+const initChart = async () => {
+	const response = await fetch("http://127.0.0.1:8000/get_chart/");
+	const option = await response.json();
+	const myChart = echarts.init(document.getElementById("chart"));
+	myChart.setOption(option);
+	myChart.resize();
+  };
+  window.addEventListener("load", initChart);
+
+  //FUNCION PARA CREAR GRAFICO SUMA DE GANANCIAS POR MES
+  const initChart2 = async () => {
+	const response2 = await fetch("http://127.0.0.1:8000/get_chart2/");
+	const option2 = await response2.json();
+	const myChart2 = echarts.init(document.getElementById("chart2"));
+	myChart2.setOption(option2);
+	myChart2.resize();
+  };
+  window.addEventListener("load", initChart2);
+
+  //FUNCION PARA CREAR GRAFICO DEL HOME
+  const initChart3 = async () => {
+	const response3 = await fetch("http://127.0.0.1:8000/get_chart3/");
+	const option3 = await response3.json();
+	const myChart3 = echarts.init(document.getElementById("chart3"));
+	myChart3.setOption(option3);
+	myChart3.resize();
+  };
+  window.addEventListener("load", initChart3);
+
+
+//FUNCION PARA CREAR GRAFICO DE EDADES
+  const initChart4 = async () => {
+	const response4 = await fetch("http://127.0.0.1:8000/get_chart4/");
+	const option4 = await response4.json();
+	const myChart4 = echarts.init(document.getElementById("chart4"));
+	myChart4.setOption(option4);
+	myChart4.resize();
+  };
+  window.addEventListener("load", initChart4);

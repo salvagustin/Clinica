@@ -8,36 +8,49 @@
   <h1>Estadisticas</h1>
 
 </div>
-<div class="container_1">
-  <div class="conteiner_estad_2">
-    <h2>Datos Ramdom</h2>
-    <h4>Ramdom</h3>
+<div class="content7">
+  <div class="container">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
+      <div id="chart" class="chart"></div>
+      </div>
+  </div>
+  <div class="container">
+    <div class="row my-4">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
+      <div id="chart2" class="chart2"></div>
+      </div>
+    </div>
   </div>
 </div>
-
+<div class="content7">
+  <div class="container">
+    <div class="row my-4">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
+      <div id="chart4" class="chart4"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container_1">
   <div class="conteiner_estad_2">
-    <h2>Datos por mes</h2>
     <h4>Mes:{{ mesactual }}</h4>
-    <h4>Citas: {{ citasmes }} </h4>
     <h4>Consultas: {{ consultasmes }} </h4>
     <h4>Devengado: ${{ devengadomes }} </h4>
   </div>
 
   <div class="conteiner_estad_2">
-    <h2>Datos por año</h2>
     <h4>Año:{{ year }}</h4>
-    <h4>Citas: {{ citasanio }} </h4>
     <h4>Consultas: {{ consultasanio}} </h4>
     <h4>Devengado: ${{ devengadoanio}} </h4>
   </div>
   <div class="conteiner_estad_2">
-    <h2>Conteo General</h2>
-    <h4>Total de citas: {{ totalcitas }} </h2>
     <h4>Consultas: {{ totalconsultas }} </h4>
     <h4>Pacientes: {{ totalpacientes }} </h4>
     <h4>Devengado: ${{ totaldevengado }} </h4>
   </div>
 </div>
 
+<script>
+  
+  </script>
 {% endblock content %}

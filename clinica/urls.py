@@ -10,6 +10,7 @@ urlpatterns = [
     path('', inicio),
     path('inicio/', inicio),
     path('estadisticas/', estadisticas),
+    
     #DIRECCION PACIENTES
     path('pacientes/', ListaPacientes),
     path('agregarpaciente/', crear_paciente),
