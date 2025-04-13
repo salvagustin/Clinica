@@ -3,46 +3,90 @@
 {% block title %} | Inicio {% endblock title %}
 
 {% block content %}
-<div class="text-center">
-    <br><br>
-        <h1>System</h1>
-</div>
-<div class="container_home_buttons">
-    <div class="container_home_buttons_2">
-    <a class="btn btn-outline-success" href="/agregarpaciente/">Agregar paciente</a>
-    <a class="btn btn-outline-success" href="/agregarconsulta/">Agregar consulta</a>
+<div class="container py-5">
+  <!-- Encabezado -->
+  <div class="text-center mb-1">
+    <h1 class="fw-bold">Sistema de Gestión Clínica</h1>
+  </div>
+
+  <!-- Acciones principales -->
+  <div class="row justify-content-center mb-1">
+    <div class="col-md-4 d-grid mb-2">
+      <a class="btn btn-success btn-lg shadow-sm" href="/agregarpaciente/">Agregar Paciente</a>
     </div>
-    <div class="content2">
-      <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" name="nombre" 
-              autocomplete="off" style="width: 500px;">
-
-      <button class="btn btn-outline-success" type="submit" onclick="buscar_paciente_index()">Buscar</button>
+    <div class="col-md-4 d-grid mb-2">
+      <a class="btn btn-primary btn-lg shadow-sm" href="/agregarconsulta/">Agregar Consulta</a>
     </div>
+  </div>
+
+  <!-- Búsqueda -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-6">
+      <div class="input-group shadow-sm">
+        <input type="text" class="form-control" placeholder="Buscar paciente por nombre" name="nombre" autocomplete="off">
+        <button class="btn btn-outline-success" type="submit" onclick="buscar_paciente_index()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="row mb-3">
+    <!-- Gráfico 1: Consultas Recientes -->
+    <div class="col-md-6 mb-2">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-center">Consultas Recientes</h5>
+          <div id="chart3" style="height: 350px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico 2: Top 5 Pacientes con más Consultas -->
+    <div class="col-md-6 mb-2">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div id="chart5" style="height: 350px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas del día -->
+  <div class="row text-center">
+    <div class="col-md-6 mb-0">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Consultas del Día</h5>
+          <p class="fs-4">{{ consultashoy }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-0">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Devengado Hoy</h5>
+          <p class="fs-4">${{ devengadohoy }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="container">
-  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
-    <br><br>
-  <div id="chart3" class="chart3"></div>
-  </div>
-</div>
-<br><br>
-<div class="container_home">
-  <div class="container_estad_2">
-    <h4>Consultas:{{consultashoy}}</h4>
-  </div>
-  <div class="container_estad_2">
-    <h4>Devengado:${{devengadohoy}}</h4>
-  </div>
-</div>
-
+<!-- Alerta de paciente no encontrado -->
 {% if mensaje == 1 %}
-    <script>
-        swal({
-            title: "!Dato no encontrado!",
-            text: "No existe ese paciente!",
-            icon: "info",
-        });
-    </script>
+<script>
+  swal({
+    title: "¡Dato no encontrado!",
+    text: "No existe ese paciente.",
+    icon: "info",
+    button: "Aceptar"
+  }).then(() => {
+    location.href = "/inicio/"
+  });
+</script>
 {% endif %}
-{% endblock content %}>
+
+<!-- ECharts CDN -->
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+{% endblock content %}

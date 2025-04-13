@@ -1,35 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %} | Consulta {% endblock title %}
+{% block title %} | Editar Consulta {% endblock title %}
 {% block extrahead %}
-{{consultaform.media }}
+  {{ consultaform.media }}  <!-- Carga los archivos JS y CSS para crispy_forms -->
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="text-center">
-        <br><br>
-        <h1>Editar consulta</h1>
-        <br>
+    <div class="text-center mb-5">
+        <h1>Editar Consulta</h1>
+        <p>Actualiza los detalles de la consulta del paciente</p>
     </div>
 </div>
-<br><br><br>
+
 {% load crispy_forms_tags %}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Numero: {{ consulta.idconsulta }}</h4>
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Número de Consulta: {{ consulta.idconsulta }}</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         
-                        {{ consultaform |crispy}}
-                        <div class="content">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a class="btn btn-secondary" href="javascript:history.back()">Cancelar</a>
+                        {{ consultaform|crispy }}
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -37,4 +38,5 @@
         </div>
     </div>
 </div>
+
 {% endblock content %}

@@ -1,35 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %} | Receta {% endblock title %}
+{% block title %} | Editar Receta {% endblock title %}
+
 {% block extrahead %}
-{{recetaform.media }}
+{{ recetaform.media }}
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="text-center">
-        <br><br>
-        <h1>Editar receta</h1>
-        <br>
-    </div>
-</div>
-<br><br><br>
 {% load crispy_forms_tags %}
-<div class="container">
+
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Numero: {{ receta.idreceta }}</h4>
+        <div class="col-lg-8 col-md-10">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Editar Receta</h2>
+                <p class="text-muted">Modifica las indicaciones o detalles de la receta</p>
+            </div>
+
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Número de Receta: {{ receta.idreceta }}</h5>
                 </div>
-                <div class="card-body">
-                    <form method="POST" enctype="multipart/form-data">
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
-                        
-                        {{ recetaform |crispy}}
-                        <div class="content">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a class="btn btn-secondary" href="javascript:history.back()">Cancelar</a>
+                        {{ recetaform|crispy }}
+
+                        <div id="formErrors" class="alert alert-danger d-none mt-3"></div>
+
+                        <div class="d-flex justify-content-end mt-4 gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save"></i> Guardar cambios
+                            </button>
+                            <a href="/recetas/" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -38,3 +43,7 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+<!-- Puedes agregar JS personalizado aquí si es necesario -->
+{% endblock %}

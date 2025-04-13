@@ -3,94 +3,102 @@
 {% block title %} | Consultas {% endblock title %}
 
 {% block content %}
-<div class="text-center">
-    <br><br>
-        <h1>Consultas</h1>
-</div>
-<div class="content">
-    <div class="content2">
-        <div class="content3">
-            <a class="btn btn-primary" href="/agregarconsulta/">Agregar</a>
+{% load static %}
+<div class="container py-4">
+    <div class="text-center mb-2">
+        <h2 class="fw-bold">Listado de Consultas</h2>
+    </div>
+
+    <!-- Controles -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary" href="/agregarconsulta/">
+                <i class="bi bi-plus-circle"></i> Agregar
+            </a>
+            <a class="btn btn-secondary" href="/consultas/">
+                <i class="bi bi-arrow-clockwise"></i> Restablecer
+            </a>
         </div>
-        <div class="content4">
-            <a class="btn btn-secondary" href="/consultas/">Restablecer</a>
+
+        <div class="d-flex gap-2">
+            <input class="form-control" type="text" placeholder="Ingrese un nombre" aria-label="Buscar"
+                autocomplete="off" name="consulta" id="busquedaConsulta">
+            <button class="btn btn-outline-success" type="button" onclick="buscar_consulta()">
+                <i class="bi bi-search"></i> Buscar
+            </button>
         </div>
     </div>
-    <div class="content2">
-        <div class="content5">
-            <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" 
-            autocomplete="off" name="consulta">
-        </div>
-        <div class="content6">
-            <button class="btn btn-outline-success" type="submit" onclick="buscar_consulta()">Buscar</button>
 
-        </div>
-    </div>
-</div>
-
-<div class="container">
+    <!-- Tabla de Consultas -->
     <div class="tbl_container">
-        <br>
-        <table class="tbl">
-            <thead>
-                <th>Numero</th>
-                <th>Paciente</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Diagnostico</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-            </thead>
-            <tbody>
-                {% for consulta in entity %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-center">
+                <thead class="table-dark">
                     <tr>
-                        <td data-lable="Numero:">{{ consulta.idconsulta }}</td>
-                        <td data-lable="Fecha:">{{ consulta.paciente.nombre|truncatechars:20 }}</td>
-                        <td data-lable="Hora:">{{ consulta.fechaconsulta }}</td>
-                        <td data-lable="Paciente:">{{ consulta.horaconsulta}}</td>
-                        <td data-lable="Obs:">{{ consulta.diagnostico|truncatechars:30  }}</td>  
-                        <td data-lable="Cobro:">${{ consulta.precioconsulta }}</td>
-                        <td class="centrado2">
-                            <a class="btn btn-secondary" href="/editarconsulta/{{consulta.idconsulta}}/">Editar</a>
-                           
-                            <button type="button" class="btn btn-danger" onclick="eliminarregistro(
-                                id = '{{ consulta.idconsulta}}', 
-                                objeto='consulta',
-                                objeto2='{{consulta.fechaconsulta}}'
-                                )">Eliminar</a> 
-    
+                        <th>Número</th>
+                        <th>Paciente</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Diagnóstico</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in entity %}
+                    <tr>
+                        <td>{{ consulta.idconsulta }}</td>
+                        <td>{{ consulta.paciente.nombre|truncatechars:20 }}</td>
+                        <td>{{ consulta.fechaconsulta }}</td>
+                        <td>{{ consulta.horaconsulta }}</td>
+                        <td>{{ consulta.diagnostico|truncatechars:30 }}</td>
+                        <td>${{ consulta.precioconsulta }}</td>
+                        <td>
+                            <div class="btn-group gap-1">
+                                <a class="btn btn-secondary btn-sm" href="/editarconsulta/{{ consulta.idconsulta }}/">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarregistro(
+                                    id = '{{ consulta.idconsulta }}',
+                                    objeto = 'consulta',
+                                    objeto2 = '{{ consulta.fechaconsulta }}'
+                                )">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </div>
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <br>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">No hay consultas registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% include "paginacion.html" %}
     </div>
 </div>
 
-    {% if mensaje == 1 %}
-    <script>
-        swal({
-            title: "!Dato no encontrado!",
-            text: "No existe ese paciente!",
-            icon: "info",
-        })
-        .then((willDelete) => {
-            if (willDelete) { 
-                location.href = "/consultas/"
-            } 
-        });
-    </script>
-    {% else %}
-        {% if  mensaje == 2 %}
-        <script>
-            swal({      // ESTA EN PRUEBAAA
-                title: "!Consulta Creada!",
-                text: "",
-                timer: 2000,
-                showConfirmButton: false});
-        </script>
-        {% endif %}
-    {% endif %}
+<!-- Mensajes SweetAlert -->
+{% if mensaje == 1 %}
+<script>
+    swal({
+        title: "¡Dato no encontrado!",
+        text: "No existe ese paciente.",
+        icon: "info",
+    }).then(() => {
+        location.href = "/consultas/";
+    });
+</script>
+{% elif mensaje == 2 %}
+<script>
+    swal({
+        title: "¡Consulta Creada!",
+        text: "",
+        timer: 2000,
+        showConfirmButton: false
+    });
+</script>
+{% endif %}
 {% endblock content %}

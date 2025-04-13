@@ -7,8 +7,8 @@ from django.core.paginator import Paginator
 from django.http import Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.db.models import Sum
-from collections import defaultdict
+from django.db.models import Sum,Count
+from django.db.models.functions import ExtractMonth
 from django.db.models.expressions import RawSQL
 from django.views.generic import View
 from datetime import timedelta, date
@@ -305,103 +305,111 @@ def get_chart2(request):
 def get_chart3(request):
     colors = ['#5470C6', '#91CC75', '#EE6666']
     
-    consultatotal = []
-    conteoconsultas = []
-    conteopacientes = []
+    # Consultas: ganancias y conteo por mes
+    consulta_por_mes = (Consulta.objects.annotate(mes=ExtractMonth('fechaconsulta')).values('mes').annotate(
+                        total_ganancias=Sum('precioconsulta'),total_consultas=Count('idconsulta')))
 
-    for i in range(1, 13):
-        sumadevengado = Consulta.objects.filter(fechaconsulta__month=i).aggregate(Sum('precioconsulta')).get('precioconsulta__sum') or 0
-        consultas = Consulta.objects.filter(fechaconsulta__month=i).count()
-        pacientes = Paciente.objects.filter(fechacreacion__month=i).count()
+# Pacientes: conteo por mes
+    paciente_por_mes = (Paciente.objects.annotate(mes=ExtractMonth('fechacreacion')).values('mes')
+                        .annotate(total_pacientes=Count('idpaciente')))
 
-        consultatotal.append(sumadevengado)
-        conteoconsultas.append(consultas)
-        conteopacientes.append(pacientes)
+    consultatotal = [0] * 12
+    conteoconsultas = [0] * 12
+    conteopacientes = [0] * 12
 
+    for c in consulta_por_mes:
+        index = c['mes'] - 1
+        consultatotal[index] = float(c['total_ganancias'] or 0)
+        conteoconsultas[index] = int(c['total_consultas'])
+
+    for p in paciente_por_mes:
+        index = p['mes'] - 1
+        conteopacientes[index] = int(p['total_pacientes'])
+    
     chart3 = {
-        "color": colors,
-        "tooltip": {
-            "trigger": "axis",
-            "axisPointer": {
-                "type": "cross"
-            }
-        },
-        "grid": {
-            "right": "20%"
-        },
-        "toolbox": {
-            "feature": {
-                "dataView": { "show": True, "readOnly": False },
-                "restore": { "show": True },
-                "saveAsImage": { "show": True }
-            }
-        },
-        "legend": {
-            "data": ["Ganancias", "Consultas", "Pacientes"]
-        },
-        "xAxis": [
-            {
-                "type": "category",
-                "axisTick": { "alignWithLabel": True },
-                "data": ["En", "Feb", "Mar", "Ab", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dec"]
-            }
-        ],
-        "yAxis": [
-            {
-                "type": "value",
-                "name": "Ganancias",
-                "position": "right",
-                "alignTicks": True,
-                "axisLine": {
-                    "show": True,
-                    "lineStyle": { "color": colors[0] }
-                },
-                "axisLabel": { "formatter": "{value} $" }
+    "color": colors,
+    "tooltip": {
+        "trigger": "axis",
+        "axisPointer": {
+            "type": "cross"
+        }
+    },
+    "grid": {
+        "right": "20%"
+    },
+    "toolbox": {
+        "feature": {
+            "dataView": { "show": True, "readOnly": False },
+            "restore": { "show": True },
+            "saveAsImage": { "show": True }
+        }
+    },
+    "legend": {
+        "data": ["Ganancias", "Consultas", "Pacientes"]
+    },
+    "xAxis": [
+        {
+            "type": "category",
+            "axisTick": { "alignWithLabel": True },
+            "data": ["En", "Feb", "Mar", "Ab", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dic"]
+        }
+    ],
+    "yAxis": [
+        {
+            "type": "value",
+            "name": "Ganancias",
+            "position": "right",
+            "alignTicks": True,
+            "axisLine": {
+                "show": True,
+                "lineStyle": { "color": colors[0] }
             },
-            {
-                "type": "value",
-                "name": "Consultas",
-                "position": "right",
-                "offset": 80,
-                "alignTicks": True,
-                "axisLine": {
-                    "show": True,
-                    "lineStyle": { "color": colors[1] }
-                },
-                "axisLabel": { "formatter": "{value}" }
+            "axisLabel": { "formatter": "{value} $" }
+        },
+        {
+            "type": "value",
+            "name": "Consultas",
+            "position": "right",
+            "offset": 80,
+            "alignTicks": True,
+            "axisLine": {
+                "show": True,
+                "lineStyle": { "color": colors[1] }
             },
-            {
-                "type": "value",
-                "name": "Pacientes",
-                "position": "left",
-                "alignTicks": True,
-                "axisLine": {
-                    "show": True,
-                    "lineStyle": { "color": colors[2] }
-                },
-                "axisLabel": { "formatter": "{value}" }
-            }
-        ],
-        "series": [
-            {
-                "name": "Ganancias",
-                "type": "bar",
-                "data": consultatotal
+            "axisLabel": { "formatter": "{value}" }
+        },
+        {
+            "type": "value",
+            "name": "Pacientes",
+            "position": "left",
+            "alignTicks": True,
+            "axisLine": {
+                "show": True,
+                "lineStyle": { "color": colors[2] }
             },
-            {
-                "name": "Consultas",
-                "type": "bar",
-                "yAxisIndex": 1,
-                "data": conteoconsultas
-            },
-            {
-                "name": "Pacientes",
-                "type": "line",
-                "yAxisIndex": 2,
-                "data": conteopacientes
-            }
-        ]
-    }
+            "axisLabel": { "formatter": "{value}" }
+        }
+    ],
+    "series": [
+        {
+            "name": "Ganancias",
+            "type": "bar",
+            "data": consultatotal
+        },
+        {
+            "name": "Consultas",
+            "type": "bar",
+            "yAxisIndex": 1,
+            "data": conteoconsultas
+        },
+        {
+            "name": "Pacientes",
+            "type": "line",
+            "yAxisIndex": 2,
+            "data": conteopacientes
+        }
+    ]
+}
 
     return JsonResponse(chart3)
 
@@ -486,6 +494,93 @@ def get_chart4(request):
    
     return JsonResponse(chart4)
 
+######### FUNCION PARA CREAR EL GRAFICO DE LOS 5 PACIENTES CON MAS CONSULTAS
+@login_required
+def get_chart5(request):
+    # Obtener los 5 pacientes con más consultas
+    top_pacientes = (
+        Consulta.objects.values('paciente__nombre')
+        .annotate(total=Count('paciente__idpaciente'))
+        .order_by('-total')[:5]
+    )
+
+    nombres = [p['paciente__nombre'] for p in top_pacientes]
+    cantidades = [p['total'] for p in top_pacientes]
+
+    chart5 = {
+        "title": {
+            "text": "Top 5 Pacientes con Más Consultas",
+            "left": "center",
+            "textStyle": {
+                "fontSize": 20,
+                "fontWeight": "bold",
+                "color": "#333"
+            }
+        },
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "shadow"
+            }
+        },
+        "grid": {
+            "left": "5%",
+            "right": "5%",
+            "bottom": "10%",
+            "containLabel": True
+        },
+        "xAxis": {
+            "type": "category",
+            "data": nombres,
+            "axisLabel": {
+                "interval": 0,
+                "rotate": 15,
+                "fontSize": 12,
+                "color": "#666"
+            },
+            "axisLine": {
+                "lineStyle": {
+                    "color": "#ccc"
+                }
+            }
+        },
+        "yAxis": {
+            "type": "value",
+            "name": "Consultas",
+            "axisLabel": {
+                "color": "#666"
+            }
+        },
+        "series": [{
+            "data": cantidades,
+            "type": "bar",
+            "barWidth": "50%",
+            "itemStyle": {
+                "color": {
+                    "type": "linear",
+                    "x": 0,
+                    "y": 0,
+                    "x2": 0,
+                    "y2": 1,
+                    "colorStops": [
+                        {"offset": 0, "color": "#42a5f5"},
+                        {"offset": 1, "color": "#1e88e5"}
+                    ]
+                },
+                "borderRadius": [5, 5, 0, 0]
+            },
+            "label": {
+                "show": True,
+                "position": "top",
+                "color": "#000",
+                "fontSize": 12
+            }
+        }]
+    }
+
+    return JsonResponse(chart5)
+
+
 #################### ESTADISTICAS ###################################
 @login_required
 def estadisticas(request):
@@ -496,10 +591,15 @@ def estadisticas(request):
     citasmes = Cita.objects.filter(fechacita__month=mesactualnumero).count()
     consultasmes = Consulta.objects.filter(fechaconsulta__month =mesactualnumero).count()
     devengadomes = Consulta.objects.filter(fechaconsulta__month =mesactualnumero).aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
+    
     citasanio = Cita.objects.filter(fechacita__year=anoactual).count()
     consultasanio = Consulta.objects.filter(fechaconsulta__year =anoactual).count()
     devengadoanio = Consulta.objects.filter(fechaconsulta__year =anoactual).aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
-
+    
+    pacientesmesactual = Paciente.objects.filter(fechacreacion__month=mesactualnumero).count()
+    
+    pacientesanio = Paciente.objects.filter(fechacreacion__year=anoactual).count()
+    
     totalpacientes = Paciente.objects.count()
     totaldevengado = Consulta.objects.all().aggregate(Sum('precioconsulta')).get('precioconsulta__sum')
     totalcitas = Cita.objects.count()
@@ -511,6 +611,8 @@ def estadisticas(request):
         'consultasmes': consultasmes,
         'mesactual': mes,
         'citasmes': citasmes,
+        'pacientesmesactual':pacientesmesactual,
+        'pacientesanio':pacientesanio,
         'citasanio':citasanio,
         'consultasanio':consultasanio,
         'devengadoanio':devengadoanio,

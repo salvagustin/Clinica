@@ -3,42 +3,63 @@
 {% block title %} | Historial {% endblock title %}
 
 {% block content %}
+<div class="container py-5">
+    <!-- Título -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Historial del Paciente</h2>
+    </div>
 
-<div class="text-center">
-    <br><br>
-    <h1>Historial</h1>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Nombre: {{nombre}} </h4>
+    <!-- Información del paciente -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm rounded-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-2">
+                        <strong>Nombre:</strong> {{ nombre }}
+                    </h4>
+                    <p class="card-subtitle text-muted">
+                        <strong>Total de Consultas:</strong> {{ conteo }}
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="content7">
-        <h5>Total: {{conteo}} </h5>
-    </div>
-</div>
-<div class="container">
+
+    <!-- Tabla de historial -->
     <div class="tbl_container">
-        <table class="tbl">
-            <thead>
-                <th>Numero</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th colspan="2">Diagnostico</th>
-            </thead>
-            <tbody>
-                {% for consulta in entity %}
-                
-                    <tr>  
-                        <td data-lable="Numero:">{{ consulta.idconsulta }}</td>
-                        <td data-lable="Fecha:">{{ consulta.fechaconsulta }}</td>
-                        <td data-lable="Fecha:">{{ consulta.horaconsulta }}</td>
-                        <td data-lable="Obs:">{{ consulta.diagnostico|truncatechars:50 }}</td>
-                        <td><a class="btn btn-outline-secondary" href="/historialid/{{consulta.idconsulta}}/"
-                            role="button" target ="_blank">Detalles</a></td>
+        <div class="table-responsive shadow-sm rounded-3">
+            <table class="table table-hover table-bordered align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Diagnóstico</th>
+                        <th>Acciones</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for consulta in entity %}
+                    <tr>
+                        <td>{{ consulta.idconsulta }}</td>
+                        <td>{{ consulta.fechaconsulta }}</td>
+                        <td>{{ consulta.horaconsulta }}</td>
+                        <td>{{ consulta.diagnostico|truncatechars:50 }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-info" href="/historialid/{{ consulta.idconsulta }}/" target="_blank">
+                                <i class="bi bi-file-earmark-text"></i> Ver detalles
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No se encontraron consultas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
         {% include "paginacion.html" %}
     </div>
 </div>

@@ -1,43 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Receta Médica</title>
+  <style type="text/css">
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      margin: 40px;
+    }
+    .header, .footer {
+      text-align: center;
+    }
+    .clinic-info {
+      border-bottom: 1px solid #000;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .doctor-info, .patient-info {
+      margin-bottom: 20px;
+    }
+    .field-label {
+      font-weight: bold;
+    }
+    .prescription-box {
+      border: 1px solid #000;
+      padding: 10px;
+      height: 200px;
+      margin-bottom: 20px;
+    }
+    .signature-section {
+      margin-top: 60px;
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
-    <h1>Receta</h1>
-    
-    <div class="content">
-        <div class="content6">       
-            <h3 name="nombre">Nombre: {{ receta.consulta.paciente }} </h2>
-        </div>
-    </div>
-    <div class="content">
-        <div class="content6">       
-            <h3 name="nombre">Fecha: {{ receta.fechareceta }} </h2>
-        </div>
-    </div>
-    
-    <div class="content">
-        <div class="content6">       
-            <h3 name="nombre">Medicamento:{{ receta.medicamento }} </h2>
-        </div>
-    </div>
-    <div class="content">
-        <div class="content6">       
-            <h3 name="nombre">Dosis:{{ receta.dosis }} </h2>
-        </div>
-    </div>
-    <div class="content">
-        <div class="content6">       
-            <h3 name="nombre">Duracion:{{ receta.duracion }} </h2>
-        </div>
-    </div>
-    <div class="content">
-        <div class="content6">       
-            <h3 name="nombre">Indicaciones:{{ receta.indicaciones }} </h2>
-        </div>
-    </div>
+
+  <div class="header">
+    <h2>Receta Médica</h2>
+  </div>
+
+  <div class="clinic-info">
+    <p><strong>Clínica Médica General</strong><br />
+    Dirección: Calle Salud #123, Ciudad, País<br />
+    Tel: (123) 456-7890</p>
+  </div>
+
+  <div class="doctor-info">
+    <p>
+      <span class="field-label">Medico:</span> Dr. Juan Tobar<br />
+      <span class="field-label">Especialidad:</span> Medicina General<br />
+      <span class="field-label">Cedula Profesional:</span> 1234567
+    </p>
+  </div>
+
+  <div class="patient-info">
+    <p>
+      <span class="field-label">Paciente:</span> María López<br />
+      <span class="field-label">Edad:</span> 34 años<br />
+      <span class="field-label">Fecha:</span> 12/04/2025
+    </p>
+  </div>
+
+  <div class="prescription-box">
+    <p><strong>Prescripción:</strong></p>
+    <p>1. Paracetamol 500mg cada 8 horas por 5 días<br />
+    2. Reposo relativo<br />
+    3. Hidratación adecuada</p>
+  </div>
+
+  <div class="signature-section">
+    <p>__________________________<br />
+    Firma y sello del médico</p>
+  </div>
+
+  <div class="footer">
+    <p>Esta receta es válida por 30 días</p>
+  </div>
+
 </body>
 </html>

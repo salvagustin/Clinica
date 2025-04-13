@@ -109,41 +109,94 @@ function consultadetalles(detalles){
 
 //FUNCION PARA CREAR GRAFICO DE CONTEO DE CONSULTAS
 const initChart = async () => {
-	const response = await fetch("http://127.0.0.1:8000/get_chart/");
-	const option = await response.json();
-	const myChart = echarts.init(document.getElementById("chart"));
-	myChart.setOption(option);
-	myChart.resize();
+	const chartDom = document.getElementById("chart");
+	// Evita error si el elemento no existe
+	if (!chartDom) return;
+	try {
+	  const response = await fetch("http://127.0.0.1:8000/get_chart/");
+	  const option = await response.json();
+	  const myChart = echarts.init(chartDom);
+	  myChart.setOption(option);
+	  myChart.resize();
+	} catch (error) {
+	  console.error("Error cargando el gráfico:", error);
+	}
   };
-  window.addEventListener("load", initChart);
+  // Ejecuta cuando el DOM está completamente cargado
+  window.addEventListener("DOMContentLoaded", initChart);
 
-  //FUNCION PARA CREAR GRAFICO SUMA DE GANANCIAS POR MES
-  const initChart2 = async () => {
-	const response2 = await fetch("http://127.0.0.1:8000/get_chart2/");
-	const option2 = await response2.json();
-	const myChart2 = echarts.init(document.getElementById("chart2"));
-	myChart2.setOption(option2);
-	myChart2.resize();
+
+// FUNCIÓN PARA CREAR GRÁFICO DE SUMA DE GANANCIAS POR MES
+const initChart2 = async () => {
+	const chartDom = document.getElementById("chart2");
+	// Evita error si el elemento no existe
+	if (!chartDom) return;
+	try {
+	  const response2 = await fetch("http://127.0.0.1:8000/get_chart2/");
+	  const option2 = await response2.json();
+	  const myChart2 = echarts.init(chartDom);
+	  myChart2.setOption(option2);
+	  myChart2.resize();
+	} catch (error) {
+	  console.error("Error cargando el gráfico:", error);
+	}
   };
-  window.addEventListener("load", initChart2);
+  // Ejecuta cuando el DOM está completamente cargado
+  window.addEventListener("DOMContentLoaded", initChart2);
+
+
 
   //FUNCION PARA CREAR GRAFICO DEL HOME
-  const initChart3 = async () => {
-	const response3 = await fetch("http://127.0.0.1:8000/get_chart3/");
-	const option3 = await response3.json();
-	const myChart3 = echarts.init(document.getElementById("chart3"));
-	myChart3.setOption(option3);
-	myChart3.resize();
+const initChart3 = async () => {
+	const chartDom3 = document.getElementById("chart3");
+	// Evita error si el elemento no existe
+	if (!chartDom3) return;
+	try {
+	  const response3 = await fetch("http://127.0.0.1:8000/get_chart3/");
+	  const option3 = await response3.json();
+	  const myChart3 = echarts.init(chartDom3);
+	  myChart3.setOption(option3);
+	  myChart3.resize();
+	} catch (error) {
+	  console.error("Error cargando el gráfico:", error);
+	}
   };
-  window.addEventListener("load", initChart3);
+  // Ejecuta cuando el DOM está completamente cargado
+  window.addEventListener("DOMContentLoaded", initChart3);
 
 
 //FUNCION PARA CREAR GRAFICO DE EDADES
-  const initChart4 = async () => {
-	const response4 = await fetch("http://127.0.0.1:8000/get_chart4/");
-	const option4 = await response4.json();
-	const myChart4 = echarts.init(document.getElementById("chart4"));
-	myChart4.setOption(option4);
-	myChart4.resize();
+const initChart4 = async () => {
+	const chartDom4 = document.getElementById("chart4");
+	// Evita error si el elemento no existe
+	if (!chartDom4) return;
+	try {
+	  const response4 = await fetch("http://127.0.0.1:8000/get_chart4/");
+	  const option4 = await response4.json();
+	  const myChart4 = echarts.init(chartDom4);
+	  myChart4.setOption(option4);
+	  myChart4.resize();
+	} catch (error) {
+	  console.error("Error cargando el gráfico:", error);
+	}
   };
-  window.addEventListener("load", initChart4);
+  // Ejecuta cuando el DOM está completamente cargado
+  window.addEventListener("DOMContentLoaded", initChart4);
+
+  //FUNCION PARA CREAR GRAFICO DE PACIENTES CON MAS CONSULTAS
+const initChart5 = async () => {
+	const chartDom5 = document.getElementById("chart5");
+	// Evita error si el elemento no existe
+	if (!chartDom5) return;
+	try {
+	  const response5 = await fetch("http://127.0.0.1:8000/get_chart5/");
+	  const option5 = await response5.json();
+	  const myChart5 = echarts.init(chartDom5);
+	  myChart5.setOption(option5);
+	  myChart5.resize();
+	} catch (error) {
+	  console.error("Error cargando el gráfico:", error);
+	}
+  };
+  // Ejecuta cuando el DOM está completamente cargado
+  window.addEventListener("DOMContentLoaded", initChart5);

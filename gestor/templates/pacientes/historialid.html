@@ -3,64 +3,38 @@
 {% block title %} | Historial {% endblock title %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">Historial detallado</h1>
+    </div>
 
-<div class="text-center">
-    <br><br>
-    <h1>Historial detallado</h1>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Nombre: {{ consulta.paciente }} </h4>
+    <!-- Datos del paciente -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Datos de la Consulta</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Paciente:</strong> {{ consulta.paciente }}</p>
+            <p><strong>Fecha de consulta:</strong> {{ consulta.fechaconsulta }}</p>
+            <p><strong>Peso:</strong> {{ consulta.peso }} kg</p>
+            <p><strong>Altura:</strong> {{ consulta.altura }} cm</p>
+            <p><strong>Temperatura:</strong> {{ consulta.temperatura }} °C</p>
+            <p><strong>Presión Arterial:</strong> {{ consulta.presionarterial }}</p>
+            <p><strong>Diagnóstico:</strong> {{ consulta.diagnostico }}</p>
+        </div>
     </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Fecha:{{ consulta.fechaconsulta }} </h4>
-    </div>
-</div> 
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Peso: {{ consulta.peso }}</h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Altura: {{ consulta.altura }}</h4>
-    </div>
-</div>
-<div class="content">  
-    <div class="content6">       
-        <h4 name="nombre">Temperatura:{{ consulta.temperatura }} </h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Presion arterial:{{ consulta.presionarterial }} </h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Diagnostico:{{ consulta.diagnostico }} </h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Medicamento:{{ receta.medicamento }} </h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Dosis:{{ receta.dosis }} </h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Duracion:{{ receta.duracion }} </h4>
-    </div>
-</div>
-<div class="content">
-    <div class="content6">       
-        <h4 name="nombre">Indicaciones:{{ receta.indicaciones }} </h4>
+
+    <!-- Datos de la receta -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Receta Médica</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Medicamento:</strong> {{ receta.medicamento }}</p>
+            <p><strong>Dosis:</strong> {{ receta.dosis }}</p>
+            <p><strong>Duración:</strong> {{ receta.duracion }}</p>
+            <p><strong>Indicaciones:</strong> {{ receta.indicaciones }}</p>
+        </div>
     </div>
 </div>
 {% endblock content %}

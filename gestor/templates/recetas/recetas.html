@@ -3,90 +3,94 @@
 {% block title %} | Recetas {% endblock title %}
 
 {% block content %}
-<div class="text-center">
-    <br><br>
-        <h1>Recetas</h1>
-</div>
-<div class="content">
-    <div class="content2">
-        
-        <div class="content4">
-            <a class="btn btn-secondary" href="/recetas/">Restablecer</a>
-        </div>
+<div class="container py-4">
+    <!-- Título -->
+    <div class="text-center mb-2">
+        <h2 class="fw-bold">Recetas</h2>
     </div>
-    <div class="content2">
-        <div class="content5">
-            <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" aria-label="Search" 
-            autocomplete="off" name="receta">
-        </div>
-        <div class="content6">
-            <button class="btn btn-outline-success" type="submit" onclick="buscar_receta()">Buscar</button>
 
-        </div>
+    <!-- Filtros y búsqueda -->
+    <div class="d-flex justify-content-between flex-wrap gap-2 mb-4">
+        <a class="btn btn-secondary" href="/recetas/">
+            <i class="bi bi-arrow-clockwise"></i> Restablecer
+        </a>
+        <form class="d-flex" onsubmit="event.preventDefault(); buscar_receta();">
+            <input class="form-control me-2" type="text" placeholder="Ingrese un nombre" name="receta" autocomplete="off">
+            <button class="btn btn-outline-success" type="submit">
+                <i class="bi bi-search"></i> Buscar
+            </button>
+        </form>
     </div>
-</div>
 
-<div class="container">
-    <div class="tbl_container">
-        <br>
-        <table class="tbl">
-            <thead>
-                <th>Numero</th>
-                <th>Paciente</th>
-                <th>Fecha</th>
-                <th>Indicaciones</th>
-                <th>Acciones</th>
+    <!-- Tabla de recetas -->
+    <div class="table-responsive shadow-sm rounded-3">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Número</th>
+                    <th>Paciente</th>
+                    <th>Fecha</th>
+                    <th>Indicaciones</th>
+                    <th>Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 {% for receta in entity %}
-                    <tr>
-                        <td data-lable="Numero:">{{ receta.idreceta }}</td>
-                        <td data-lable="Fecha:">{{ receta.consulta.paciente.nombre|truncatechars:20 }}</td>
-                        <td data-lable="Hora:">{{ receta.fechareceta }}</td>
-                        <td data-lable="Cobro:">{{ receta.indicaciones }}</td>
-                        <td class="centrado2">
-                            <a class="btn btn-secondary" href="/editarreceta/{{receta.idreceta}}/">Editar</a>
-                           
-                            <button type="button" class="btn btn-danger" onclick="eliminarregistro(
-                                id = '{{ receta.idreceta}}', 
-                                objeto='receta',
-                                objeto2='{{receta.fechareceta}}'
-                                )">Eliminar</button>
-                            
-                            <a class="btn btn-success"  href="/imprimirreceta/{{receta.idreceta}}/"  role="button" target ="_blank">Imprimir</a> 
-    
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ receta.idreceta }}</td>
+                    <td>{{ receta.consulta.paciente.nombre|truncatechars:20 }}</td>
+                    <td>{{ receta.fechareceta }}</td>
+                    <td>{{ receta.indicaciones|truncatechars:50 }}</td>
+                    <td>
+                        <div class="btn-group gap-1">
+                            <a class="btn btn-sm btn-secondary" href="/editarreceta/{{ receta.idreceta }}/">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="eliminarregistro(
+                                id = '{{ receta.idreceta }}', 
+                                objeto = 'receta',
+                                objeto2 = '{{ receta.fechareceta }}'
+                            )">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                            <a class="btn btn-sm btn-success" href="/imprimirreceta/{{ receta.idreceta }}/" target="_blank">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No se encontraron recetas.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <br>
-        {% include "paginacion.html" %}
     </div>
+
+    <!-- Paginación -->
+    {% include "paginacion.html" %}
 </div>
 
-    {% if mensaje == 1 %}
-    <script>
-        swal({
-            title: "!Dato no encontrado!",
-            text: "No existe ese paciente!",
-            icon: "info",
-        })
-        .then((willDelete) => {
-            if (willDelete) { 
-                location.href = "/recetas/"
-            } 
-        });
-    </script>
-    {% else %}
-        {% if  mensaje == 2 %}
-        <script>
-            swal({      // ESTA EN PRUEBAAA
-                title: "!Consulta Creada!",
-                text: "",
-                timer: 2000,
-                showConfirmButton: false});
-        </script>
-        {% endif %}
-    {% endif %}
+<!-- Alertas con SweetAlert -->
+{% if mensaje == 1 %}
+<script>
+    swal({
+        title: "¡Dato no encontrado!",
+        text: "No existe ese paciente.",
+        icon: "info",
+    }).then(() => {
+        location.href = "/recetas/";
+    });
+</script>
+{% elif mensaje == 2 %}
+<script>
+    swal({
+        title: "¡Consulta Creada!",
+        text: "",
+        timer: 2000,
+        showConfirmButton: false
+    });
+</script>
+{% endif %}
 {% endblock content %}
