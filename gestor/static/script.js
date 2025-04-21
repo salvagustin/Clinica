@@ -200,3 +200,111 @@ const initChart5 = async () => {
   };
   // Ejecuta cuando el DOM está completamente cargado
   window.addEventListener("DOMContentLoaded", initChart5);
+
+  function calcularEdad(fechaStr) {
+	const nacimiento = new Date(fechaStr);
+	const hoy = new Date();
+	let edad = hoy.getFullYear() - nacimiento.getFullYear();
+	const m = hoy.getMonth() - nacimiento.getMonth();
+	if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+	  edad--;
+	}
+	return edad;
+  }
+  
+  function mostrarModalPaciente(button) {
+	const paciente = {
+	  id: button.getAttribute("data-id"),
+	  nombre: button.getAttribute("data-nombre"),
+	  fecha_nacimiento: button.getAttribute("data-fecha"),
+	  telefono: button.getAttribute("data-telefono")
+	};
+  
+	document.getElementById("pacienteNombre").innerText = paciente.nombre;
+	document.getElementById("pacienteFechaNacimiento").innerText = paciente.fecha_nacimiento;
+	document.getElementById("pacienteTelefono").innerText = paciente.telefono;
+  
+	const edad = calcularEdad(paciente.fecha_nacimiento);
+	document.getElementById("pacienteEdad").innerText = edad;
+  
+	// Rutas
+	document.getElementById("btnEditarPaciente").href = `/editarpaciente/${paciente.id}/`;
+	document.getElementById("btnHistorial").href = `/historial/${paciente.id}/`;
+  
+	const btnEliminar = document.getElementById("btnEliminarPaciente");
+	btnEliminar.onclick = () => eliminarregistro(paciente.id, "paciente", paciente.nombre);
+  
+	// Mostrar modal con Bootstrap
+	const modal = new bootstrap.Modal(document.getElementById("modalPaciente"));
+	modal.show();
+  }
+  
+  function mostrarModalConsulta(button) {
+	const consulta = {
+	  id: button.getAttribute("data-id"),
+	  nombre: button.getAttribute("data-nombre"),
+	  fechaconsulta: button.getAttribute("data-fecha"),
+	  precioconsulta: button.getAttribute("data-precioconsulta"),
+	  peso: button.getAttribute("data-peso"),
+	  altura: button.getAttribute("data-altura"),
+	  temperatura: button.getAttribute("data-temperatura"),
+	  presionarterial: button.getAttribute("data-presionarterial"),
+	  diagnostico: button.getAttribute("data-diagnostico")
+	};
+  
+	document.getElementById("consultaId").innerText = consulta.id;
+	document.getElementById("consultaNombre").innerText = consulta.nombre;
+	document.getElementById("consultaFechaconsulta").innerText = consulta.fechaconsulta;
+	document.getElementById("consultaPrecioconsulta").innerText = consulta.precioconsulta;
+	document.getElementById("consultaPeso").innerText = consulta.peso;
+	document.getElementById("consultaAltura").innerText = consulta.altura;
+	document.getElementById("consultaTemperatura").innerText = consulta.temperatura;
+	document.getElementById("consultaPresionarterial").innerText = consulta.presionarterial;
+	document.getElementById("consultaDiagnostico").innerText = consulta.diagnostico;
+  
+	// Rutas
+	document.getElementById("btnEditarConsulta").href = `/editarconsulta/${consulta.id}/`;
+  
+	// Función para eliminar
+	const btnEliminar = document.getElementById("btnEliminarConsulta");
+	btnEliminar.onclick = () => eliminarregistro(consulta.id, "consulta", consulta.nombre);
+  
+	// Mostrar modal usando Bootstrap 5
+	const modal = new bootstrap.Modal(document.getElementById("modalConsulta"));
+	modal.show();
+  }
+   
+  function mostrarModalReceta(button) {
+	const receta = {
+	  id: button.getAttribute("data-id"),
+	  consulta: button.getAttribute("data-consulta"),
+	  paciente: button.getAttribute("data-paciente"),
+	  fechareceta: button.getAttribute("data-fechareceta"),
+	  medicamento: button.getAttribute("data-medicamento"),
+	  dosis: button.getAttribute("data-dosis"),
+	  duracion: button.getAttribute("data-duracion"),
+	  indicaciones: button.getAttribute("data-indicaciones")
+	};
+  
+	document.getElementById("recetaId").innerText = receta.id;
+	document.getElementById("recetaConsulta").innerText = receta.consulta;
+	document.getElementById("recetaPaciente").innerText = receta.paciente;
+	document.getElementById("recetaFecha").innerText = receta.fechareceta;
+	document.getElementById("recetaMedicamento").innerText = receta.medicamento;
+	document.getElementById("recetaDosis").innerText = receta.dosis;
+	document.getElementById("recetaDuracion").innerText = receta.duracion;
+	document.getElementById("recetaIndicaciones").innerText = receta.indicaciones;
+  
+	// Rutas
+	document.getElementById("btnEditarReceta").href = `/editarreceta/${receta.id}/`;
+	document.getElementById("btnImprimir").href = `/imprimirreceta/${receta.id}/`;
+  
+	const btnEliminar = document.getElementById("btnEliminarReceta");
+	btnEliminar.onclick = () => eliminarregistro(receta.id, "receta", receta.paciente);
+  
+	// Mostrar modal con Bootstrap
+	const modalElement = document.getElementById("modalReceta");
+	const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+	modal.show();
+  }
+  

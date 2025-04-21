@@ -16,7 +16,11 @@
                 <h2 class="fw-bold">Nueva Receta</h2>
                 <p class="text-muted">Completa el formulario para registrar una receta</p>
             </div>
-
+            {% if paciente_nombre %}
+                <div class="alert alert-info mb-4">
+                    <strong>Paciente:</strong> {{ paciente_nombre }}
+                </div>
+            {% endif %}
             <div class="card shadow rounded-4">
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">Formulario de Receta</h5>

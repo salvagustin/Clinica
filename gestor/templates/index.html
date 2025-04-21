@@ -3,75 +3,115 @@
 {% block title %} | Inicio {% endblock title %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container-fluid py-4">
   <!-- Encabezado -->
-  <div class="text-center mb-1">
+  <div class="text-center mb-4">
+    <br>
     <h1 class="fw-bold">Sistema de Gestión Clínica</h1>
   </div>
 
   <!-- Acciones principales -->
-  <div class="row justify-content-center mb-1">
+  <div class="row justify-content-center mb-3">
     <div class="col-md-4 d-grid mb-2">
-      <a class="btn btn-success btn-lg shadow-sm" href="/agregarpaciente/">Agregar Paciente</a>
+      <a class="btn btn-success btn-lg shadow-sm" href="/agregarpaciente/">Nuevo Paciente</a>
     </div>
     <div class="col-md-4 d-grid mb-2">
-      <a class="btn btn-primary btn-lg shadow-sm" href="/agregarconsulta/">Agregar Consulta</a>
+      <a class="btn btn-primary btn-lg shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAgregarConsulta">Nueva Consulta</a>
     </div>
   </div>
 
   <!-- Búsqueda -->
   <div class="row justify-content-center mb-4">
     <div class="col-md-6">
-      <div class="input-group shadow-sm">
-        <input type="text" class="form-control" placeholder="Buscar paciente por nombre" name="nombre" autocomplete="off">
-        <button class="btn btn-outline-success" type="submit" onclick="buscar_paciente_index()">Buscar</button>
-      </div>
+      <form method="get" action="/buscarpaciente/">
+        <div class="input-group shadow-sm">
+          <input type="text" class="form-control" placeholder="Buscar paciente por nombre" name="nombre" autocomplete="off">
+          <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </div>
+      </form>
     </div>
   </div>
 
   <!-- Gráficos -->
-  <div class="row mb-3">
+  <div class="row gx-3 mb-4">
     <!-- Gráfico 1: Consultas Recientes -->
-    <div class="col-md-6 mb-2">
-      <div class="card shadow-sm">
+    <div class="col-lg-6 col-md-12 mb-3">
+      <div class="card h-100 shadow-sm">
         <div class="card-body">
-          <h5 class="card-title text-center">Consultas Recientes</h5>
-          <div id="chart3" style="height: 350px;"></div>
+          <div id="chart3" style="width: 100%; height: 350px;"></div>
         </div>
       </div>
     </div>
 
     <!-- Gráfico 2: Top 5 Pacientes con más Consultas -->
-    <div class="col-md-6 mb-2">
-      <div class="card shadow-sm">
+    <div class="col-lg-6 col-md-12 mb-3">
+      <div class="card h-100 shadow-sm">
         <div class="card-body">
-          <div id="chart5" style="height: 350px;"></div>
+          <div id="chart5" style="width: 100%; height: 350px;"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Estadísticas del día -->
-  <div class="row text-center">
-    <div class="col-md-6 mb-0">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">Consultas del Día</h5>
-          <p class="fs-4">{{ consultashoy }}</p>
-        </div>
+ <!-- Estadísticas del día -->
+<div class="row text-center mb-1">    
+  <div class="col-md-6 mb-1">
+    <div class="card border-0 shadow-sm h-100" style="min-height: 100px;">
+      <div class="card-body py-2">
+        <h6 class="card-title mb-1">Consultas del Día</h6>
+        <p class="fs-4 mb-0">{{ consultashoy }}</p>
       </div>
     </div>
-    <div class="col-md-6 mb-0">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">Devengado Hoy</h5>
-          <p class="fs-4">${{ devengadohoy }}</p>
-        </div>
+  </div>
+  <div class="col-md-6 mb-1">
+    <div class="card border-0 shadow-sm h-100" style="min-height: 100px;">
+      <div class="card-body py-2">
+        <h6 class="card-title mb-1">Devengado Hoy</h6>
+        <p class="fs-4 mb-0">${{ devengadohoy }}</p>
       </div>
     </div>
   </div>
 </div>
+ <!-- Modal para agregar consulta -->
+ <div class="modal fade" id="modalAgregarConsulta" tabindex="-1" aria-labelledby="modalAgregarConsultaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="get" action="/agregarconsulta/">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarConsultaLabel">Selecciona un Paciente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <select class="form-select" name="paciente_id" required>
+            <option value="" disabled selected>Selecciona un paciente</option>
+            {% for paciente in pacientes %}
+              <option value="{{ paciente.idpaciente }}">{{ paciente.nombre }}</option>
+            {% endfor %}
+          </select>
+          <input type="hidden" name="paciente_nombre" id="pacienteNombreInput">
+        </div>
+        <div class="modal-footer">
 
+          <!-- Botón que envía el form -->
+          <button type="submit" class="btn btn-success">Siguiente</button>
+
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const select = document.querySelector('select[name="paciente_id"]');
+    const input = document.getElementById('pacienteNombreInput');
+
+    select.addEventListener('change', function () {
+      const nombre = select.options[select.selectedIndex].text;
+      input.value = nombre;
+    });
+  });
+</script>
 <!-- Alerta de paciente no encontrado -->
 {% if mensaje == 1 %}
 <script>
@@ -86,7 +126,9 @@
 </script>
 {% endif %}
 
-<!-- ECharts CDN -->
+<!-- ECharts -->
 <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+
 
 {% endblock content %}

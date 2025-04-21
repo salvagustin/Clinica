@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from gestor.models import *
 from gestor.forms import *
@@ -12,6 +12,7 @@ from django.db.models.functions import ExtractMonth
 from django.db.models.expressions import RawSQL
 from django.views.generic import View
 from datetime import timedelta, date
+from urllib.parse import urlencode
 from .utils import render_to_pdf
 import datetime
 
@@ -69,6 +70,7 @@ def nombre_mes(mesactualnumero):
 #######################################################################
 # FUNCION PARA OBTENER LA INFORMACION DEL INDEX
 def infohome():
+    pacientes = Paciente.objects.all()
     citasdiarias = Cita.objects.filter(fechacita=horayfecha).count()
     proximacita = Cita.objects.filter(fechacita=horayfecha)
     consultasdiarias = Consulta.objects.filter(fechaconsulta=horayfecha).count()
@@ -83,14 +85,15 @@ def infohome():
         'proximacita':proximacita,
         'citashoy':citasdiarias,
         'consultashoy':consultasdiarias,
-        'devengadohoy':devengadodiario          
+        'devengadohoy':devengadodiario,
+        'pacientes':pacientes         
     }
     return data
 
 
 @login_required
 def inicio(request):
-
+    
     data = infohome()
     return render(request, 'index.html',data)
 
@@ -1020,28 +1023,23 @@ def ListaPacientes(request):
 
 #VISTA CREAR PACIENTE
 @login_required
-def crear_paciente(request):
+def crear_paciente(request):    
     if request.method == 'GET':
-        return render(
-            request,
-            'Pacientes/crear_paciente.html',
-            {'PacienteForm': PacienteForm}
-        )
+        return render(request, 'Pacientes/crear_paciente.html', {'PacienteForm': PacienteForm()})
+    
     if request.method == 'POST':
-        form = PacienteForm(data=request.POST)
+        form = PacienteForm(request.POST)
         if form.is_valid():
-            form.save()
-            data={
-                'mensaje': 2
-            }
-            return redirect('/pacientes/',data)
-        else:
-            form = PacienteForm(data=request.POST)
-            return render(
-                request,
-                'Pacientes/crear_paciente.html',
-                {'PacienteForm': form}
-            )
+            nuevo_paciente = form.save()
+            # Redireccionar con ID y nombre como parámetros
+            query_params = urlencode({
+                'paciente_id': nuevo_paciente.idpaciente,
+                'paciente_nombre': nuevo_paciente.nombre
+            })
+            return redirect(f'/agregarconsulta/?{query_params}')
+        
+        return render(request, 'Pacientes/crear_paciente.html', {'PacienteForm': form})
+
 
 #VISTA EDITAR PACIENTE
 @login_required
@@ -1185,6 +1183,7 @@ def buscar_paciente_index(request, name):
 @login_required
 def ListaConsultas(request):
     consultas = Consulta.objects.all().order_by('-idconsulta')
+    pacientes = Paciente.objects.all()
     pagina = request.GET.get("page", 1)
 
     try:
@@ -1194,12 +1193,14 @@ def ListaConsultas(request):
         raise Http404
 
     data = {
+        'pacientes':pacientes,
         'entity': consultas,
         'paginator':paginator
     }
     return render(request,  'Consultas/consultas.html',data )
 
-#VISTA PARA AGREGAR CONSULTAS
+#VISTA PARA AGREGAR CONSULTA SIN PACIENTE
+'''
 @login_required
 def crear_consulta(request):
     if request.method == 'GET':
@@ -1220,8 +1221,34 @@ def crear_consulta(request):
                 request,
                 'Consultas/crear_consulta.html',
                 {'ConsultaForm': form}
-            )
+            )'''
+#VISTA PARA AGREGAR CONSULTAS DESDE CREAR PACIENTE
+@login_required
+def crear_consulta(request):
+    paciente_id = request.GET.get('paciente_id') or request.POST.get('paciente')
+    paciente_nombre = request.GET.get('paciente_nombre')
 
+    historial_consultas = []
+
+    if paciente_id:
+        historial_consultas = Consulta.objects.filter(paciente_id=paciente_id).order_by('-fechaconsulta')
+
+    if request.method == 'POST':
+        form = ConsultaForm(request.POST)
+        if form.is_valid():
+            consulta = form.save()
+            return redirect(f'/agregarreceta/?consulta_id={consulta.idconsulta}&paciente_nombre={consulta.paciente.nombre}')
+    else:
+        initial = {}
+        if paciente_id:
+            initial['paciente'] = paciente_id
+        form = ConsultaForm(initial=initial)
+
+    return render(request, 'Consultas/crear_consulta.html', {
+        'ConsultaForm': form,
+        'paciente_nombre': paciente_nombre,
+        'historial_consultas': historial_consultas
+    })
 #VISTA EDITAR COSULTAS
 @login_required
 def editar_consulta(request, pk=None):
@@ -1326,28 +1353,23 @@ def ListaRecetas(request):
 #VISTA PARA AGREGAR CONSULTAS
 @login_required
 def crear_receta(request):
-    if request.method == 'GET':
-        return render(
-            request,
-            'Recetas/crear_receta.html',
-            {'RecetaForm': RecetaForm}
-        )
+    consulta_id = request.GET.get('consulta_id')
+    paciente_nombre = request.GET.get('paciente_nombre')
+
     if request.method == 'POST':
-        form = RecetaForm(data=request.POST,)
+        form = RecetaForm(request.POST)
         if form.is_valid():
-            consulta = Consulta.objects.all().last()
-            print(consulta.idconsulta)
-            form.instance.consulta=consulta
-            form.save()
-            print('receta guardada')
-            return redirect('/recetas/')
-        else:
-            form = RecetaForm(data=request.POST)
-            return render(
-                request,
-                'Recetas/crear_receta.html',
-                {'RecetaForm': form}
-            )
+            receta = form.save(commit=False)
+            receta.consulta_id = consulta_id  # Asignamos la consulta relacionada
+            receta.save()
+            return redirect('/recetas/')  # o a donde desees
+    else:
+        form = RecetaForm()
+
+    return render(request, 'Recetas/crear_receta.html', {
+        'RecetaForm': form,
+        'paciente_nombre': paciente_nombre
+    })
         
 #VISTA EDITAR RECETA
 @login_required

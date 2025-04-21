@@ -20,19 +20,25 @@ class PacienteForm(forms.ModelForm):
 
 
 class ConsultaForm(forms.ModelForm):
-
     class Meta:
         model = Consulta
         fields = '__all__'
-        widgets={'presionarterial':forms.TextInput(attrs={'placeholder': 'XX/XX','autocomplete':'off','style': 'width: 50%'}),
-                 'peso':forms.NumberInput(attrs={'placeholder': 'Kg','autocomplete':'off','style': 'width: 50%'}),
-                 'temperatura':forms.NumberInput(attrs={'placeholder': '°C','autocomplete':'off','style': 'width: 50%'}),
-                 'sintomas':forms.Textarea(attrs={'placeholder': 'Sintomas del paciente',"rows":5}),
-                 'altura':forms.NumberInput(attrs={'placeholder': 'Mts','autocomplete':'off','style': 'width: 50%'}),
-                 'diagnostico':forms.Textarea(attrs={'placeholder': 'Diagnostico del paciente',"rows":5}),
-                 'tratamiento':forms.Textarea(attrs={'placeholder': 'Tratamiento del paciente',"rows":5}),
-                 'precioconsulta':forms.NumberInput(attrs={'placeholder': '$00.00','autocomplete':'off','style': 'width: 50%'})
-                 }
+        widgets = {
+            'presionarterial': forms.TextInput(attrs={'placeholder': 'XX/XX', 'style': 'width: 50%'}),
+            'peso': forms.NumberInput(attrs={'placeholder': 'Kg', 'style': 'width: 50%'}),
+            'temperatura': forms.NumberInput(attrs={'placeholder': '°C', 'style': 'width: 50%'}),
+            'sintomas': forms.Textarea(attrs={'placeholder': 'Síntomas del paciente', "rows": 5}),
+            'altura': forms.NumberInput(attrs={'placeholder': 'Mts', 'style': 'width: 50%'}),
+            'diagnostico': forms.Textarea(attrs={'placeholder': 'Diagnóstico del paciente', "rows": 5}),
+            'tratamiento': forms.Textarea(attrs={'placeholder': 'Tratamiento del paciente', "rows": 5}),
+            'precioconsulta': forms.NumberInput(attrs={'placeholder': '$00.00', 'style': 'width: 50%'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.initial.get('paciente') or self.data.get('paciente'):
+            self.fields['paciente'].widget = forms.HiddenInput()
+
 
         
 

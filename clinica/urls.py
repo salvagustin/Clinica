@@ -22,7 +22,8 @@ urlpatterns = [
     path('buscarpacienteindex/<name>/', buscar_paciente_index),
     #DIRECCION CONSULTAS
     path('consultas/', ListaConsultas),
-    path('agregarconsulta/', crear_consulta),
+    path('agregarconsulta/', crear_consulta, name='crear_consulta'),
+   # path('agregarconsultapaciente/', crear_consulta2),#Esta url es para agregar una consulta desde el perfil del paciente
     path('editarconsulta/<int:pk>/', editar_consulta),
     path('eliminarconsulta/<int:pk>/', eliminar_consulta),
     path('buscarconsulta/<name>',buscar_consulta),

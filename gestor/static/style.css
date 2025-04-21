@@ -1,19 +1,22 @@
-
 @page {
   size: A4;
   font-family: "DejaVu Sans";
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 body {
   min-height: 100%;
   background: #e3f2fd;
   font-family: "DejaVu Sans", sans-serif;
 }
+
+/* ===== Barra superior ===== */
 nav {
   position: fixed;
   top: 0;
@@ -24,47 +27,58 @@ nav {
   align-items: center;
   background: #fff;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
+
 nav .logo {
   display: flex;
   align-items: center;
   margin: 0 24px;
 }
+
 .logo .menu-icon {
   color: #333;
   font-size: 24px;
   margin-right: 14px;
   cursor: pointer;
 }
+
 .logo .logo-name {
   color: #333;
   font-size: 22px;
   font-weight: 500;
 }
+
+/* ===== Sidebar lateral ===== */
 nav .sidebar {
   position: fixed;
   top: 0;
-  left: -100%;
+  left: -260px;
   height: 100%;
   width: 260px;
   padding: 20px 0;
   background-color: #fff;
-  box-shadow: 0 5px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s ease;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  transition: left 0.4s ease;
+  z-index: 999;
 }
+
 nav.open .sidebar {
   left: 0;
 }
+
 .sidebar .sidebar-content {
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
   padding: 30px 16px;
 }
+
 .sidebar-content .list {
   list-style: none;
 }
+
 .list .nav-link {
   display: flex;
   align-items: center;
@@ -72,69 +86,100 @@ nav.open .sidebar {
   padding: 14px 12px;
   border-radius: 8px;
   text-decoration: none;
+  color: #707070;
 }
-.lists .nav-link:hover {
+
+.list .nav-link:hover {
   background-color: #4070f4;
+  color: #fff;
 }
+
 .nav-link .icon {
   margin-right: 14px;
   font-size: 20px;
-  color: #707070;
 }
+
 .nav-link .link {
   font-size: 16px;
-  color: #707070;
   font-weight: 400;
 }
-.lists .nav-link:hover .icon,
-.lists .nav-link:hover .link {
-  color: #fff;
-}
+
+/* ===== Overlay para móviles ===== */
 .overlay {
   position: fixed;
   top: 0;
   left: -100%;
-  height: 1000vh;
-  width: 200%;
+  height: 100vh;
+  width: 100vw;
   opacity: 0;
   pointer-events: none;
   transition: all 0.4s ease;
   background: rgba(0, 0, 0, 0.3);
+  z-index: 998;
 }
+
 nav.open ~ .overlay {
-  opacity: 1;
   left: 260px;
+  opacity: 1;
   pointer-events: auto;
 }
 
-
-
-
-
-/*CONTAINERS BOTONES GUARDAR Y CANCELAR*/
-.container1{
-  display:flex;
-  justify-content: space-evenly;
-}
-
-/*DISENO PARA BOTONES EDITAR Y ELIMINAR EN PACIENTES*/
-.centrado2{
+/* ===== Containers genéricos ===== */
+.container1,
+.centrado2,
+.container_resumen_datoscitas,
+.container_resumen_datoscitas2,
+.container_home_buttons,
+.container_home_buttons_2,
+.content,
+.content2,
+.content3,
+.content4,
+.content5,
+.content6,
+.content7 {
   display: flex;
+  width: 100%;
+  flex-direction: row;
   justify-content: space-evenly;
 }
 
+.container_home_buttons_2,
+.content2 {
+  padding: 5px;
+}
 
+.content3 {
+  justify-content: center;
+}
 
-/*DISENO PARA ESTADISTICAS Y HOME*/
-.container_1{
+.content4 {
+  justify-content: flex-start;
+}
+
+.content5 {
+  justify-content: flex-end;
+}
+
+.content6 {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.content7 {
+  justify-content: flex-end;
+}
+
+/* ===== Estadísticas y Home ===== */
+.container_1 {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  width: 100%;  
+  width: 100%;
   height: 100%;
 }
 
-.container_estad_2{
+.container_estad_2 {
   border: 1px solid black;
   margin: 10px;
   text-align: center;
@@ -145,117 +190,48 @@ nav.open ~ .overlay {
   width: 25%;
   height: 60px;
 }
-.container_home{
 
+.container_home {
   margin: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
 
-
-
-
-/*DISENO DE TABLA HISTORIAL*/
-.tdconsultaobrservaciones{
- 
+/* ===== Tabla historial ===== */
+.tdconsultaobrservaciones {
   max-width: 50px;
   text-overflow: ellipsis;
-  white-space:nowrap;
+  white-space: nowrap;
   overflow: hidden;
 }
-.centrar_texto{
+
+.centrar_texto {
   text-align: center;
 }
 
-.container_resumen_datoscitas{
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.container_resumen_datoscitas2{
-  display: flex;
-  justify-content: left;
-}
-
-
-
-/*DISENO DE HOME*/
-.container_home_buttons{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.container_home_buttons_2{
-  width: 100%;
-  padding: 5px;
-  display: flex;
-  justify-content: space-evenly;
-  
-}
-
-/* DISENO DE LOS BOTONTES AGREGAR RESTABLECER Y BUSCAR*/
-.content{
-  width:100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.content2{
-  width: 100%;
-  padding: 5px;
-  display: flex;
-  justify-content: space-evenly;
-  
-}
-.content3{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  }
-.content4{
-  display: flex;
-  justify-content: start;
-  width: 100%;
-}
-.content5{
-  display: flex;
-  justify-content: end;
-  width: 100%;
-}
-.content6{
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-}
-.content7{
-  display: flex;
-  justify-content: end;
-  flex-direction: row;
-}
-
-
-
-/* TABLAS RESPONSIVE*/
-.container1{
+.container1 {
   max-width: 1440px;
-  width: 100%;
-  background:#fff;
+  background: #fff;
   box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
 }
-.container h2{
+
+.container h2 {
   padding: 2rem 1rem;
   font-size: 1.5rem;
   text-align: center;
 }
-.tbl{
+
+.tbl {
   width: 100%;
   border-collapse: collapse;
 }
-.tbl thead{
-  background:#424949 ;
-  color:#fff;
+
+.tbl thead {
+  background: #424949;
+  color: #fff;
 }
+
 .tbl thead tr th {
   font-size: 0.9rem;
   padding: 0.4rem;
@@ -263,41 +239,49 @@ nav.open ~ .overlay {
   vertical-align: top;
   border: 0.5px solid #aab7b8;
 }
+
 .tbl tbody tr td {
-  font-size: 0.5 rem;
+  font-size: 0.5rem;
   letter-spacing: 0.1rem;
-  font-weight: normal;
   text-align: center;
   border: 0.5px solid #aab7b8;
   padding: 0.4rem;
 }
-.tbl tr:nth-child(even){
+
+.tbl tr:nth-child(even) {
   background: #ccc;
 }
-.tbl tr:hover td{
+
+.tbl tr:hover td {
   background: #839192;
   color: black;
   transition: all 0.3s ease-in;
   cursor: pointer;
 }
-@media(max-width:768px){
-  .tbl thead{
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .tbl thead {
     display: none;
   }
+
   .tbl tr,
-  .tbl td{
+  .tbl td {
     display: block;
     width: 100%;
   }
-  .tbl tr{
+
+  .tbl tr {
     margin-bottom: 1rem;
   }
-  .tbl tbody tr td{
+
+  .tbl tbody tr td {
     text-align: right;
     position: relative;
   }
-  .tbl td::before{
-    content: attr(data-lable);
+
+  .tbl td::before {
+    content: attr(data-label);
     position: absolute;
     left: 0;
     width: 50%;
@@ -306,39 +290,17 @@ nav.open ~ .overlay {
   }
 }
 
-
-/*DISENO DE LAS GRAFICAS*/
-.chart{
-  width: 100%;
+/* ===== Gráficas ===== */
+.chart,
+.chart2,
+.chart3,
+.chart4,
+.chart5 {
+  width: 100% !important;
+  height: 100% !important;
   min-height: 400px;
-  min-width:400px;
-}
-
-.chart2{
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  min-width:400px;
+  min-width: 400px;
 }
 
-.chart3{
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-  min-width:800px;
-}
-
-.chart4{
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  min-width:400px;
-}
-.chart5{
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  min-width:400px;
-}
 
 
